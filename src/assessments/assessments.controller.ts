@@ -1,12 +1,13 @@
 import { Get } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
+import { AssessmentsService } from './assessments.service';
 
 @Controller('assessments')
 export class AssessmentsController {
-  constructor() {} // will add service later
+  constructor(private readonly assessmentsService: AssessmentsService) {} // will add service later
 
   @Get()
   getAssessments(): string {
-    return 'This will return all assessments';
+    return this.assessmentsService.getAssessments();
   }
 }
