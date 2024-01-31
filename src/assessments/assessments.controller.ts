@@ -1,4 +1,4 @@
-import { Get } from '@nestjs/common';
+import { Get, Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { AssessmentsService } from './assessments.service';
 
@@ -9,5 +9,11 @@ export class AssessmentsController {
   @Get()
   getAssessments(): string {
     return this.assessmentsService.getAssessments();
+  }
+
+  // create a new assessment
+  @Post()
+  createAssessment() {
+    return this.assessmentsService.createAssessment();
   }
 }

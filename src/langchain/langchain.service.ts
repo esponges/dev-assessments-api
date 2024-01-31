@@ -33,8 +33,8 @@ export class LangchainService {
     return prompt;
   }
 
-  async getRunnable(
-    schema: Record<string, string>,
+  getRunnable(
+    schema: Record<string, any>,
     prompt: typeof this.someRandomPrompt, // fix this hack
   ) {
     const runnable = createStructuredOutputRunnable({
