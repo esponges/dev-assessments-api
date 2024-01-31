@@ -11,7 +11,7 @@ import { InputValues } from '@langchain/core/utils/types';
 @Injectable({})
 export class LangchainService {
   private chatOpenAI: ChatOpenAI = new ChatOpenAI({
-    openAIApiKey: process.env.OPENAI_API_KEY,
+    openAIApiKey: process.env.OPENAI_API_KEY || '',
     modelName: 'gpt-4',
   });
   private outputParser = new JsonOutputFunctionsParser();
