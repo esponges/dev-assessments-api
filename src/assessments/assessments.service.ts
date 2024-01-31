@@ -1,25 +1,57 @@
 import { Injectable } from '@nestjs/common';
 import { LangchainService } from 'src/langchain/langchain.service';
 
+// follow above example to create a schema for the display_quiz
 const jsonSchema = {
-  title: 'Person',
-  description: 'Identifying information about a person.',
+  name: 'display_quiz',
+  description:
+    "Displays a quiz to the student with multiple choice and free response questions. The student's responses are then returned.",
+  // parameters: {
+  //   type: 'object',
+  //   properties: {
+  //     title: { type: 'string' },
+  //     questions: {
+  //       type: 'array',
+  //       description:
+  //         'An array of questions, each with a title and potentially options (if multiple choice).',
+  //       items: {
+  //         type: 'object',
+  //         properties: {
+  //           question_text: { type: 'string' },
+  //           question_type: {
+  //             type: 'string',
+  //             enum: ['MULTIPLE_CHOICE', 'FREE_RESPONSE'],
+  //           },
+  //           choices: { type: 'array', items: { type: 'string' } },
+  //         },
+  //         required: ['question_text'],
+  //       },
+  //     },
+  //   },
+  //   required: ['title', 'questions'],
+  // },
   type: 'object',
   properties: {
-    name: { title: 'Name', description: "The person's name", type: 'string' },
-    age: { title: 'Age', description: "The person's age", type: 'integer' },
-    fav_food: {
-      title: 'Fav Food',
-      description: "The person's favorite food",
-      type: 'string',
-    },
-    nationality: {
-      title: 'Nationality',
-      description: "Will be inferred from the person's name",
-      type: 'string',
+    title: { type: 'string' },
+    questions: {
+      type: 'array',
+      description:
+        'An array of questions with a mix of multiple choice and free response questions.',
+      items: {
+        type: 'object',
+        properties: {
+          question_text: { type: 'string' },
+          question_type: {
+            type: 'string',
+            enum: ['MULTIPLE_CHOICE', 'FREE_RESPONSE'],
+          },
+          choices: { type: 'array', items: { type: 'string' } },
+          correct_answer: { type: 'string' },
+        },
+        required: ['question_text'],
+      },
     },
   },
-  required: ['name', 'age', 'fav_food', 'nationality'],
 };
 
 @Injectable()
@@ -32,14 +64,17 @@ export class AssessmentsService {
   }
 
   async createAssessment() {
-    const promptMessages = ['human', 'Human description: {description}'];
+    const promptMessages = [
+      'human',
+      'An assessment with 10 questions for a software developer with the following topics and level: {description}',
+    ];
     const prompt = this.langchain.generatePrompt(promptMessages);
     const runnable = this.langchain.getRunnable(this.schema, prompt);
 
     const response = await runnable.invoke({
       description:
         // "My name's John Doe and I'm 30 years old. My favorite kind of food are chocolate chip cookies.",
-        'Me llamo Juan Perez y tengo 30 años. Me encanta la cerveza y los Takis.',
+        'Full stack golang (backend) and React (front end) for a web application with 7 years of experience.',
     });
     return response;
   }

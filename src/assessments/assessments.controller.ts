@@ -11,7 +11,6 @@ export class AssessmentsController {
     return this.assessmentsService.getAssessments();
   }
 
-  // create a new assessment
   @Post()
   createAssessment() {
     return this.assessmentsService.createAssessment();
