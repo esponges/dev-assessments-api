@@ -1,6 +1,7 @@
-import { Get, Post } from '@nestjs/common';
+import { Body, Get, Post } from '@nestjs/common';
 import { Controller } from '@nestjs/common';
 import { AssessmentsService } from './assessments.service';
+import { CreateAssessmentDto } from './dto/create-assessment.dto';
 
 @Controller('assessments')
 export class AssessmentsController {
@@ -11,8 +12,9 @@ export class AssessmentsController {
     return this.assessmentsService.getAssessments();
   }
 
-  @Post()
-  createAssessment() {
+  @Post('create')
+  createAssessment(@Body() createAssessmentBody: CreateAssessmentDto) {
+    console.log(createAssessmentBody);
     return this.assessmentsService.createAssessment();
   }
 }
