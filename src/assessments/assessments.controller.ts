@@ -4,7 +4,7 @@ import { AssessmentsService } from './assessments.service';
 
 @Controller('assessments')
 export class AssessmentsController {
-  constructor(private readonly assessmentsService: AssessmentsService) {} // will add service later
+  constructor(private readonly assessmentsService: AssessmentsService) {}
 
   @Get()
   getAssessments(): string {

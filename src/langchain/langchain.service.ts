@@ -1,8 +1,6 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
-@Injectable({
-  scope: Scope.REQUEST,
-})
+@Injectable({})
 export class LangchainService {
   constructor() {
     console.log('LangchainService constructor created');
