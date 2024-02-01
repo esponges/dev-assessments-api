@@ -21,6 +21,8 @@ const jsonSchema = {
             type: 'string',
             enum: ['MULTIPLE_CHOICE', 'FREE_RESPONSE'],
           },
+          question_topic: { type: 'string' },
+          question_difficulty: { type: 'string' },
           choices: { type: 'array', items: { type: 'string' } },
           correct_answer: { type: 'string' },
         },
