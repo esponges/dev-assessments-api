@@ -19,8 +19,7 @@ export const getAssessmentPrompt = (
           'human',
           `An assessment with ${details.number_of_questions} ${details.level} questions for a software developer with the following topics and level: {description}`,
         ],
-        description:
-          'Full stack golang (backend) and React (front end) for a web application with 7 years of experience.',
+        description: `Should cover all these topics: ${details.stack.join(', ')} ${details.duration ? ` that should be completed ${details.duration} minutes` : ''}`,
       };
   }
   return defaultCase;

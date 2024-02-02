@@ -21,4 +21,7 @@ export class CreateAssessmentDto {
 
   @IsOptional()
   duration: string;
+
+  @IsOptional()
+  prompt: number;
 }
