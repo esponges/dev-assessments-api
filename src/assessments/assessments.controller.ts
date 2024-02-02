@@ -14,7 +14,6 @@ export class AssessmentsController {
 
   @Post('create')
   createAssessment(@Body() createAssessmentBody: CreateAssessmentDto) {
-    console.log(createAssessmentBody);
     return this.assessmentsService.createAssessment(createAssessmentBody);
   }
 }

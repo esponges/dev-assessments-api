@@ -12,14 +12,31 @@ export const getAssessmentPrompt = (
     description: 'Full stack golang (backend) and React (front end)',
   };
 
+  const { stack, level, number_of_questions, duration } = details;
+
   switch (type) {
     case 1:
       return {
+        /* 
+          the model is ignoring the difficulty (level)
+        */
         promptMessages: [
           'human',
-          `An assessment with ${details.number_of_questions} ${details.level} questions for a software developer with the following topics and level: {description}`,
+          `An assessment with ${number_of_questions} ${level} questions for a software developer with the following topics and level: {description}`,
         ],
-        description: `Should cover all these topics: ${details.stack.join(', ')} ${details.duration ? ` that should be completed ${details.duration} minutes` : ''}`,
+        description: `Should cover all these topics: ${stack.join(', ')} ${duration ? ` that should be completed ${duration} minutes` : ''}`,
+      };
+    case 2:
+      // try to get it to really understand the difficulty
+      /* 
+        still giving similar questions, it improve a bit by passing more options to the stack
+      */
+      return {
+        promptMessages: [
+          'human',
+          `An assessment for a software developer with the following topics and difficulty: {description}`,
+        ],
+        description: `Question count: ${number_of_questions}. Should cover all these topics: ${stack.join(', ')} ${duration ? ` that should be completed ${duration} minutes` : ''} with a ${level} difficulty`,
       };
   }
   return defaultCase;

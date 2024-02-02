@@ -43,7 +43,7 @@ export class AssessmentsService {
   }
 
   async createAssessment(details: CreateAssessmentDto) {
-    const prompts = getAssessmentPrompt(details, 1);
+    const prompts = getAssessmentPrompt(details, details.prompt);
     const prompt = this.langchain.generatePrompt(prompts.promptMessages);
     const runnable = this.langchain.getRunnable(this.schema, prompt);
 
