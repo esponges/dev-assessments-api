@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LangchainService } from 'src/langchain/langchain.service';
+import { CreateAssessmentDto } from './dto/create-assessment.dto';
+import { getAssessmentPrompt } from './prompts/assessment';
 
 // follow above example to create a schema for the display_quiz
 const jsonSchema = {
@@ -22,7 +24,11 @@ const jsonSchema = {
             enum: ['MULTIPLE_CHOICE', 'FREE_RESPONSE'],
           },
           question_topic: { type: 'string' },
-          question_difficulty: { type: 'string' },
+          question_difficulty: {
+            type: 'string',
+            description:
+              'how difficult the question is using easy, medium, hard.',
+          },
           choices: { type: 'array', items: { type: 'string' } },
           correct_answer: { type: 'string' },
         },
@@ -41,18 +47,13 @@ export class AssessmentsService {
     return 'This will return all assessments';
   }
 
-  async createAssessment() {
-    const promptMessages = [
-      'human',
-      'An assessment with 10 questions for a software developer with the following topics and level: {description}',
-    ];
-    const prompt = this.langchain.generatePrompt(promptMessages);
+  async createAssessment(details: CreateAssessmentDto) {
+    const prompts = getAssessmentPrompt(details, 1);
+    const prompt = this.langchain.generatePrompt(prompts.promptMessages);
     const runnable = this.langchain.getRunnable(this.schema, prompt);
 
     const response = await runnable.invoke({
-      description:
-        // "My name's John Doe and I'm 30 years old. My favorite kind of food are chocolate chip cookies.",
-        'Full stack golang (backend) and React (front end) for a web application with 7 years of experience.',
+      description: prompts.description,
     });
     return response;
   }
