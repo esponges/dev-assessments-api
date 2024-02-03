@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
-import { LangchainModule } from 'src/langchain/langchain.module';
+import { PineconeService } from './pinecone.service';
 
 @Module({
-  imports: [LangchainModule],
+  providers: [PineconeService],
+  exports: [PineconeService],
 })
 export class PineconeModule {}
