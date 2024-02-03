@@ -46,4 +46,8 @@ export class LangchainService {
 
     return runnable;
   }
+
+  getClient() {
+    return this.chatOpenAI;
+  }
 }
