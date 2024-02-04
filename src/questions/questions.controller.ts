@@ -1,19 +1,24 @@
-import { Controller } from '@nestjs/common';
-import { Get } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { Pinecone } from '@pinecone-database/pinecone';
 import { PineconeService } from 'src/pinecone/pinecone.service';
+import { GetQuestionsDto } from './dto/get-questions';
 
 @Controller('questions')
 export class QuestionsController {
-  // todo: is this a proper way to inject the pinecone service?
+  // todo: probably won't need this service
   private readonly pineconeClient: Pinecone;
 
   constructor(private readonly pineconeService: PineconeService) {
     this.pineconeClient = pineconeService.getClient();
   }
 
-  @Get()
-  getQuestions(/* count: number */): string {
-    return 'This will return all questions';
+  @Post()
+  async getQuestions(@Body() getQuestionsDto: GetQuestionsDto) {
+    return await this.pineconeService.makeSimilaritySearch(
+      getQuestionsDto.query,
+      getQuestionsDto.namespace,
+      getQuestionsDto.k,
+      getQuestionsDto.filter,
+    );
   }
 }
