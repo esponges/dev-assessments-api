@@ -1,4 +1,4 @@
-import { type Pinecone } from '@pinecone-database/pinecone';
+import { Pinecone } from '@pinecone-database/pinecone';
 
 export const getPineconeIndex = async (client: Pinecone) => {
   try {
@@ -10,3 +10,8 @@ export const getPineconeIndex = async (client: Pinecone) => {
     throw new Error('Failed to get Pinecone Index');
   }
 };
+
+export const pinecone = new Pinecone({
+  apiKey: process.env.PINECONE_API_KEY || '',
+  environment: process.env.PINECONE_ENVIRONMENT || '',
+});

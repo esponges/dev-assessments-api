@@ -43,6 +43,8 @@ export class PineconeService {
       includeValues: true,
     });
 
+    // todo: create endpoint to fetch the actual data from the search results
+    // or we get only vectors (not natural language) which are not useful
     return search;
   }
 }
