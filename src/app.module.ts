@@ -10,6 +10,7 @@ import { QuestionsController } from './questions/questions.controller';
 import { QuestionsService } from './questions/questions.service';
 import { QuestionsModule } from './questions/questions.module';
 import { PineconeModule } from './pinecone/pinecone.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { PineconeModule } from './pinecone/pinecone.module';
     ConfigModule.forRoot(),
     QuestionsModule,
     PineconeModule,
+    PrismaModule,
   ],
   controllers: [AppController, AssessmentsController, QuestionsController],
   providers: [AppService, AssessmentsService, QuestionsService],

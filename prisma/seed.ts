@@ -37,7 +37,6 @@ async function main() {
         content,
         metadata: {
           create: {
-            id: metadata.id,
             question_type,
             topic,
             difficulty,

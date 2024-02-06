@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { PineconeModule } from 'src/pinecone/pinecone.module';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
-  imports: [PineconeModule],
+  imports: [PrismaModule],
 })
 export class QuestionsModule {}
