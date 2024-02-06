@@ -1,7 +1,7 @@
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { Injectable } from '@nestjs/common';
 import { Pinecone } from '@pinecone-database/pinecone';
-import { LangchainService } from 'src/langchain/langchain.service';
+import { QuestionsService } from 'src/questions/questions.service';
 
 @Injectable()
 export class PineconeService {
@@ -14,7 +14,7 @@ export class PineconeService {
     modelName: 'text-embedding-3-small',
   });
 
-  constructor(private readonly langchainService: LangchainService) {
+  constructor(private readonly questionsService: QuestionsService) {
     console.log('PineconeService constructor created');
   }
 
@@ -40,11 +40,17 @@ export class PineconeService {
       topK: k || 5,
       filter: filter || {},
       includeMetadata: true,
-      includeValues: true,
+      // includeValues: true,
     });
+
+    const searchIds = search.matches.map((match) => match.id);
+    const questions = await this.questionsService.getQuestions(searchIds);
 
     // todo: create endpoint to fetch the actual data from the search results
     // or we get only vectors (not natural language) which are not useful
-    return search;
+    return {
+      similaritySearchResults: search,
+      questions,
+    };
   }
 }
