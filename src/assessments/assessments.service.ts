@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { LangchainService } from 'src/langchain/langchain.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { getAssessmentPrompt } from './prompts/assessment';
-import { displayQuizSchema } from './structured-schema.ts/structured-quiz-schema';
+import { displayQuizSchema } from './structured-schema/structured-quiz-schema';
 
 @Injectable()
 export class AssessmentsService {

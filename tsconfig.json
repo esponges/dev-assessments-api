@@ -18,6 +18,6 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/**/*.ts", "test/**/*.ts", "prisma/*.ts"],
+  "include": ["src/**/*.ts", "test/**/*.ts", "prisma/*.ts", "src/assessments/structured-schema"],
   "exclude": ["node_modules"]
 }
