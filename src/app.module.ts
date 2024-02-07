@@ -11,6 +11,7 @@ import { QuestionsService } from './questions/questions.service';
 import { QuestionsModule } from './questions/questions.module';
 import { PineconeModule } from './pinecone/pinecone.module';
 import { PrismaModule } from './prisma/prisma.module';
+import { CandidateModule } from './candidate/candidate.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PrismaModule } from './prisma/prisma.module';
     QuestionsModule,
     PineconeModule,
     PrismaModule,
+    CandidateModule,
   ],
   controllers: [AppController, AssessmentsController, QuestionsController],
   providers: [AppService, AssessmentsService, QuestionsService],

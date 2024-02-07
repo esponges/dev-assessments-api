@@ -13,7 +13,8 @@ datasource db {
 model QuestionMetadata {
   id            String   @id @default(uuid())
   question_type String
-  topic         String
+  topic         String // main technology such   as React, GraphQL, etc
+  // we'd probably need subtopics like librarier, frameworks, etc
   difficulty    String
   question      Question?
 }
