@@ -1,18 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { LangchainService } from 'src/langchain/langchain.service';
-import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
 import { getCandidateTechStackPrompt } from './prompts/candidate';
 import { candidateTechStackSchema } from './structured-schema/candidate-tech-stack';
+import { WebPDFLoader } from 'langchain/document_loaders/web/pdf';
 
 @Injectable()
 export class CandidateService {
   private readonly schema = candidateTechStackSchema;
   constructor(private readonly langchain: LangchainService) {}
 
-  async parseResume() {
-    // path must be inside the src folder (why?)
-    // future: will be replaced with a file upload from the frontend
-    const loader = new PDFLoader('src/test-docs/test-cv.pdf', {
+  async parseResume(file: Blob) {
+    const loader = new WebPDFLoader(file, {
       splitPages: false,
     });
 

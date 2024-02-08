@@ -14,7 +14,7 @@ export class CandidateController {
   @Post('parse_resume')
   @UseInterceptors(FileInterceptor('file'))
   parseResume(@UploadedFile() file: Express.Multer.File) {
-    console.log(file);
-    return this.candidateService.parseResume();
+    const blob = new Blob([file.buffer], { type: 'application/pdf' });
+    return this.candidateService.parseResume(blob);
   }
 }
