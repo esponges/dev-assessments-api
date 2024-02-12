@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Post,
   UploadedFile,
@@ -6,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { CandidateService } from './candidate.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { ParseResumeDto } from './dto/parse-resume.dto';
 
 @Controller('candidate')
 export class CandidateController {
@@ -13,8 +15,20 @@ export class CandidateController {
 
   @Post('parse_resume')
   @UseInterceptors(FileInterceptor('file'))
-  parseResume(@UploadedFile() file: Express.Multer.File) {
-    const blob = new Blob([file.buffer], { type: 'application/pdf' });
-    return this.candidateService.parseResume(blob);
+  parseResume(
+    @UploadedFile() file?: Express.Multer.File,
+    @Body() body?: ParseResumeDto,
+  ) {
+    let content: Blob | string = '';
+
+    if (file) {
+      content = new Blob([file.buffer], { type: 'application/pdf' });
+    } else {
+      content = body.resume;
+    }
+
+    if (!content) throw new Error('No resume provided');
+
+    return this.candidateService.parseResume(content);
   }
 }
