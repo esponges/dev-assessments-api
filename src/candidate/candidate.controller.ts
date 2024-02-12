@@ -5,8 +5,9 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { CandidateService } from './candidate.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+
+import { CandidateService } from './candidate.service';
 import { ParseResumeDto } from './dto/parse-resume.dto';
 
 @Controller('candidate')
@@ -29,6 +30,6 @@ export class CandidateController {
 
     if (!content) throw new Error('No resume provided');
 
-    return this.candidateService.parseResume(content);
+    return this.candidateService.parseResume(content, body.upsert);
   }
 }

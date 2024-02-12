@@ -20,3 +20,10 @@ export const candidateTechStackSchema = {
     },
   },
 };
+
+export type CandidateTechStackSchemaLLMResponse = {
+  tech_stack: {
+    tech: string;
+    years_of_experience: number;
+  }[];
+};

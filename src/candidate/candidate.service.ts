@@ -1,17 +1,27 @@
 import { Injectable } from '@nestjs/common';
 import { WebPDFLoader } from 'langchain/document_loaders/web/pdf';
+import { randomUUID } from 'crypto';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
-import { type Document } from 'langchain/document';
+
 import { LangchainService } from 'src/langchain/langchain.service';
+import { PineconeService } from 'src/pinecone/pinecone.service';
 import { getCandidateTechStackPrompt } from './prompts/candidate';
-import { candidateTechStackSchema } from './structured-schema/candidate-tech-stack';
+import {
+  type CandidateTechStackSchemaLLMResponse,
+  candidateTechStackSchema,
+} from './structured-schema/candidate-tech-stack';
+
+import { type Document } from 'langchain/document';
 
 @Injectable()
 export class CandidateService {
   private readonly schema = candidateTechStackSchema;
-  constructor(private readonly langchain: LangchainService) {}
+  constructor(
+    private readonly langchain: LangchainService,
+    private readonly pineconeService: PineconeService,
+  ) {}
 
-  async parseResume(file: Blob | string) {
+  async parseResume(file: Blob | string, upsertToVectorStore?: boolean) {
     const isBlob = file instanceof Blob;
     let docs: Document[];
     let loader: WebPDFLoader;
@@ -35,13 +45,24 @@ export class CandidateService {
     const prompt = this.langchain.generatePrompt(prompts.promptMessages);
     const runnable = this.langchain.getRunnable(this.schema, prompt);
 
-    const response = await runnable.invoke({
+    const response = (await runnable.invoke({
       description: prompts.description,
-    });
+    })) as CandidateTechStackSchemaLLMResponse;
+
+    // todo: also accept blobs
+    if (upsertToVectorStore && !isBlob && response.tech_stack) {
+      const stack = response.tech_stack?.map(({ tech }) => tech);
+      const metadata = {
+        id: randomUUID(),
+        tech_stack: stack,
+      };
+      await this.pineconeService.upsert(file, 'candidate_tech_stack', metadata);
+    }
 
     return {
       originalParsedDocs: docs,
       LLMParsedResponse: response,
+      upserted: upsertToVectorStore && !isBlob,
     };
   }
 }

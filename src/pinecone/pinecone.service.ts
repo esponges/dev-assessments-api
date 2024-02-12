@@ -53,4 +53,25 @@ export class PineconeService {
       questions,
     };
   }
+
+  async upsert(
+    content: string,
+    namespace: string,
+    metadata: Record<string, any>,
+  ) {
+    const embedding = await this.openAIEmbeddings.embedQuery(content);
+    const index = this.getIndex();
+
+    const vectorData = {
+      id: metadata.id,
+      values: embedding,
+      metadata,
+    };
+
+    try {
+      await index.namespace(namespace).upsert([vectorData]);
+    } catch (e) {
+      console.log('error upserting in pinecone', e);
+    }
+  }
 }
