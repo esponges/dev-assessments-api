@@ -13,6 +13,11 @@ import {
 
 import { type Document } from 'langchain/document';
 
+// remove spaces, and special characters from string
+function sanitizeString(str: string) {
+  return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+}
+
 @Injectable()
 export class CandidateService {
   private readonly schema = candidateTechStackSchema;
@@ -51,7 +56,10 @@ export class CandidateService {
 
     // todo: also accept blobs
     if (upsertToVectorStore && !isBlob && response.tech_stack) {
-      const stack = response.tech_stack?.map(({ tech }) => tech);
+      const stack = response.tech_stack?.map(({ tech }) =>
+        // remove spaces, and special characters from string for easier metadata filtering
+        sanitizeString(tech),
+      );
       const metadata = {
         id: randomUUID(),
         tech_stack: stack,

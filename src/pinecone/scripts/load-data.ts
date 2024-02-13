@@ -345,4 +345,31 @@ export const fakeDevsResumes = [
   IDIOMAS Español - Nativo Inglés - Fluido
   LOGROS ● Juego principal galardonado en el Festival Internacional de Videojuegos Independientes. ● Haber construido una comunidad de juego activa y comprometida con más de 50k seguidores.
   Estos perfiles ficticios se pueden usar como referencia para tus pruebas de parseo de CV y para detectar las tecnologías y experiencias de los candidatos ficticios.`,
+  `Desarrollador de Software - Enrique Soto Martínez Sevilla, España Github: github.com/enriquesm Blog: devthoughts.com/@enriquesm LinkedIn: linkedin.com/in/enrique-soto-martinez Email: enrique.soto.dev@example.com Tel: +34 655 321 987
+  PERFIL ● Más de 7 años de experiencia en desarrollo de software y arquitectura de soluciones. ● Experto en desarrollo de sistemas backend y gestión de bases de datos escalables. ● Entusiasta de la automatización, CI/CD y la integración de sistemas.
+  TECHSTACK Principal Go (Golang), Python, Java, Spring Framework, Microservices. Secundario Kubernetes, Terraform, AWS, Azure, PostgreSQL, Cassandra, Redis, GitLab CI/CD.
+  EXPERIENCIA Ingeniero de Software Senior Sevilla, España Soluciones Integrales IT Desde Marzo 2018 ● Diseñar y desarrollar sistemas backend escalables utilizando Go, y microservicios. ● Implementar infraestructura como código y estrategias de CI/CD para mejorar la entrega de software.
+  Desarrollador de Aplicaciones Granada, España Tech Innovate Agosto 2015 - Febrero 2018 ● Desarrollo de aplicaciones web basadas en Java y Spring, integrando sistemas de pago.
+  FORMACIÓN Universidad de Sevilla Máster en Ingeniería de Software 2013 - 2015
+  Universidad de Granada Grado en Informática 2008 - 2013
+  IDIOMAS Español - Nativo Inglés - Avanzado
+  LOGROS ● Automatización de procesos que redujeron en un 30% el tiempo de despliegue de nuevas versiones. ● Mentor de programadores junior y organizador de talleres internos sobre prácticas de desarrollo.`,
+  `Desarrolladora Frontend - Paula Vázquez Jiménez Santiago, Chile GitHub: github.com/paulavjimenez Portfolio: paulavjimenez.dev Linkedin: linkedin.com/in/paulavjimenez Email: paulav.jimenez@example.com Tel: +56 9 8765 4321
+  PERFIL ● Desarrolladora frontend con pasión por el diseño UI/UX y 4 años de experiencia. ● Experta en React, diseño adaptativo y rendimiento web. ● Colaboradora activa en proyectos de código abierto y comunidades de desarrollo.
+  TECHSTACK Principal React, Redux, TypeScript, Webpack, Tailwind CSS, Jest. Secundario Angular, Vue.js, Svelte, Storybook, GraphQL, Firebase.
+  EXPERIENCIA Ingeniera Frontend Santiago, Chile Digital Products Lab Desde Junio 2019 ● Liderar el desarrollo frontend de aplicaciones web utilizando React y TypeScript. ● Colaborar en la creación de librerías de componentes y garantizar la accesibilidad web.
+  Diseñadora UI/UX y Desarrolladora Valparaíso, Chile Startup Journey Enero 2017 - Mayo 2019 ● Diseño de experiencias de usuario y desarrollo de interfaces para aplicaciones móviles.
+  FORMACIÓN Universidad de Chile Professional en Diseño Gráfico 2012 - 2016
+  IDIOMAS Español - Nativo Inglés - Fluido
+  LOGROS ● Reconocida por diseñar una de las mejores interfaces del año en una competición nacional de diseño. ● Voluntaria en eventos de tecnología y mentora de programación para jóvenes estudiantes.`,
+  `Ingeniero DevOps - Jorge Alberto Navarro Ciudad de Panamá, Panamá GitHub: github.com/jorgenavdevops Blog: cloudopsinsight.com/@jorgenavdevops LinkedIn: linkedin.com/in/jorge-alberto-navarro Email: jorge.navarro.devops@example.com Tel: +507 6789 1234
+  PERFIL ● Ingeniero DevOps con más de 6 años de experiencia en automatización e infraestructuras en la nube. ● Especialista en la implementación de prácticas de DevOps y en la cultura de integración continua. ● Apasionado por la seguridad en la nube y la optimización de recursos.
+  TECHSTACK Principal Docker, Ansible, Jenkins, Kubernetes, Prometheus, Grafana.​​Secundario Python, Bash, AWS, Google Cloud Platform, ELK Stack, Serverless.  
+  EXPERIENCIA Líder DevOps Ciudad de Panamá, Panamá CloudTech Solutions Desde Abril 2018 ● Implementar y mantener pipelines de CI/CD y la infraestructura como servicio. ● Garantizar la seguridad y optimizar costes dentro de entornos basados en AWS y Google Cloud.
+  Ingeniero de Sistemas San José, Costa Rica Enterprise IT Corp Mayo 2015 - Marzo 2018 ● Mantenimiento y escalado de infraestructuras tradicionales y transición a enfoques DevOps.
+  FORMACIÓN Universidad Tecnológica de Panamá Máster en Gestión de Tecnologías de la Información 2013 - 2015
+  Universidad de Costa Rica Licenciatura en Ingeniería en Sistemas 2008 - 2012
+  IDIOMAS Español - Nativo Inglés - Avanzado
+  LOGROS ● Diseñó y orquestó la migración completa de una infraestructura on-premise a la nube, logró reducir un 40% de costos anuales. ● Orador en conferencias sobre DevOps y automatización.
+  Puedes utilizar estos casos creados como ejemplos para tus pruebas de parseo y evaluación de CVs de candidatos para posiciones en el ámbito del desarrollo y las operaciones de TI.`,
 ];
