@@ -73,4 +73,11 @@ export class CandidateService {
       upserted: upsertToVectorStore && !isBlob,
     };
   }
+
+  async getSimilarCandidates(resume: string) {
+    return this.pineconeService.makeSimilaritySearch(
+      resume,
+      'candidate_tech_stack',
+    );
+  }
 }

@@ -54,6 +54,7 @@ export class PineconeService {
     };
   }
 
+  // todo: add to the postgres db
   async upsert(
     content: string,
     namespace: string,
