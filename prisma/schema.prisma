@@ -27,3 +27,21 @@ model Question {
   metadata   QuestionMetadata @relation(fields: [metadataId], references: [id])
   updatedAt DateTime @updatedAt
 }
+
+// future model for a Candidate
+// model Candidate {
+//   id        String   @id @default(uuid())
+//   name      String
+//   email     String
+//   }
+
+model CandidateResume {
+  id        String   @id @default(uuid())
+  // name      String
+  // email     String
+  resume    String
+  techStack String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  // add a relation to the candidate in the future
+}
