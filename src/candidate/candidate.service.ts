@@ -5,6 +5,7 @@ import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 
 import { LangchainService } from 'src/langchain/langchain.service';
 import { PineconeService } from 'src/pinecone/pinecone.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { getCandidateTechStackPrompt } from './prompts/candidate';
 import {
   type CandidateTechStackSchemaLLMResponse,
@@ -24,6 +25,7 @@ export class CandidateService {
   constructor(
     private readonly langchain: LangchainService,
     private readonly pineconeService: PineconeService,
+    private readonly prismaService: PrismaService,
   ) {}
 
   async parseResume(file: Blob | string, upsertToVectorStore?: boolean) {
@@ -64,7 +66,25 @@ export class CandidateService {
         id: randomUUID(),
         tech_stack: stack,
       };
-      await this.pineconeService.upsert(file, 'candidate_tech_stack', metadata);
+
+      try {
+        // todo: make all of these transactional
+        await this.pineconeService.upsert(
+          file,
+          'candidate_tech_stack',
+          metadata,
+        );
+
+        await this.prismaService.candidateResume.create({
+          data: {
+            id: metadata.id,
+            techStack: stack,
+            resume: file,
+          },
+        });
+      } catch (e) {
+        console.error('Error upserting to vector store', e);
+      }
     }
 
     return {
