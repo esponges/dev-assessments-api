@@ -28,7 +28,7 @@ model Question {
   updatedAt DateTime @updatedAt
 }
 
-// future model for a Candidate
+// future model for a Candidate - should be improved
 // model Candidate {
 //   id        String   @id @default(uuid())
 //   name      String
