@@ -1,12 +1,11 @@
-import { CreateAssessmentDto } from '../dto/create-assessment.dto';
+import { Prompt } from 'src/types';
+import { CreateAssessmentDto } from './dto/create-assessment.dto';
+import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 
 export const getAssessmentPrompt = (
   details?: CreateAssessmentDto,
   type?: number,
-): {
-  promptMessages: string[];
-  description: string;
-} => {
+): Prompt => {
   const defaultCase = {
     promptMessages: [
       'human',
@@ -69,4 +68,43 @@ export const getAssessmentPrompt = (
       };
   }
   return defaultCase;
+};
+
+export const getEvaluateAssessmentPrompt = ({
+  challenge,
+  response,
+  promptOpt,
+}: EvaluateAssessmentDto): Partial<Prompt> => {
+  // todo: don't use partial but create a type for PromptMessages
+  const defaultCase = {
+    promptMessages: [
+      'human',
+      `You are an AI assistant for evaluating the response of a software developer to an assessment.
+
+      Please use the following criteria:
+      The response will be evaluated based on the following criteria: 
+      - code quality, 
+      - code correctness 
+      - code efficiency
+      - code maintainability
+
+      The score will be returned in the 0-100 range, with 100 being the best score.
+      
+      Key guidelines:
+      - Your feedback should be clear and concise.
+      - You will use your knowledge of the language and the framework to evaluate the response.
+      - Your evaluation should be fair and unbiased.
+      - You should consider the latest best practices and standards.
+      
+      The challenge for the developer is: ${challenge}
+      The response from the developer is: ${response}
+      `,
+    ],
+  };
+
+  switch (promptOpt) {
+    // more prompts should be added here to evaluate the response
+    default:
+      return defaultCase;
+  }
 };
