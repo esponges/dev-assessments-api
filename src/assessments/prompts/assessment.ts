@@ -61,7 +61,7 @@ export const getAssessmentPrompt = (
           - The questions should cover all the topics in the stack.
           - The questions should be clear and concise.
           - The questions should be challenging and not generic.
-          - The questions could be multiple choice or free response, depending on the difficulty level. Please use the provided schema to generate the questions,
+          - The questions could be multiple choice or free response, depending on the difficulty level. Please use the provided schema to generate the questions.
           `,
         ],
         description: `An assessment for a ${level} software developer with ${number_of_questions} questions.

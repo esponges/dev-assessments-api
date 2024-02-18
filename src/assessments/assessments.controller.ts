@@ -3,6 +3,7 @@ import { Controller } from '@nestjs/common';
 
 import { AssessmentsService } from './assessments.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
+import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 
 @Controller('assessments')
 export class AssessmentsController {
@@ -16,5 +17,10 @@ export class AssessmentsController {
   @Post('create')
   createAssessment(@Body() createAssessmentBody: CreateAssessmentDto) {
     return this.assessmentsService.createAssessment(createAssessmentBody);
+  }
+
+  @Post('evaluate')
+  evaluateAssessment(@Body() evaluateAssessmentBody: EvaluateAssessmentDto) {
+    return evaluateAssessmentBody;
   }
 }
