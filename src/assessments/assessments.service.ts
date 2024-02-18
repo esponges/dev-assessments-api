@@ -34,17 +34,19 @@ export class AssessmentsService {
   // todo: create reusable function for this
   // it would accept a prompt and a schema
   async evaluateAssessment(details: EvaluateAssessmentDto) {
-    const prompts = getEvaluateAssessmentPrompt(details);
-    const prompt = this.langchain.generatePrompt(prompts.promptMessages);
+    const { challenge, devResponse, promptMessages } =
+      getEvaluateAssessmentPrompt(details);
+    const prompt = this.langchain.generatePrompt(promptMessages);
     const runnable = this.langchain.getRunnable(
       this.evaluateAssessmentSchema,
       prompt,
     );
 
     const response = await runnable.invoke({
-      challenge: prompts.challenge,
-      response: prompts.response,
+      challenge,
+      devResponse,
     });
+
     return response;
   }
 }

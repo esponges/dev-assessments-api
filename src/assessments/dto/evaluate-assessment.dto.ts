@@ -7,6 +7,6 @@ export class EvaluateAssessmentDto {
   // assessmentId: string;
   // questionId: string;
   challenge: string;
-  response: string;
+  devResponse: string;
   promptOpt: number;
 }

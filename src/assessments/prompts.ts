@@ -72,11 +72,11 @@ export const getAssessmentPrompt = (
 
 export const getEvaluateAssessmentPrompt = ({
   challenge,
-  response,
+  devResponse,
   promptOpt,
 }: EvaluateAssessmentDto): Partial<Prompt> & {
   challenge: string;
-  response: string;
+  devResponse: string;
 } => {
   // todo: don't use partial but create a type for PromptMessages
   const defaultCase = {
@@ -100,11 +100,11 @@ export const getEvaluateAssessmentPrompt = ({
       - You should consider the latest best practices and standards.
       
       The challenge for the developer is: {challenge}
-      The response from the developer is: {response}
+      The response from the developer is: {devResponse}
       `,
     ],
     challenge: `The challenge for the developer is: ${challenge}`,
-    response: `The response from the developer is: ${response}`,
+    devResponse: `The response from the developer is: ${devResponse}`,
   };
 
   switch (promptOpt) {
