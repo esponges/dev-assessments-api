@@ -6,6 +6,7 @@ export class EvaluateAssessmentDto {
   // will be used to be retrieved from the database
   // assessmentId: string;
   // questionId: string;
-  question: string;
+  challenge: string;
   response: string;
+  promptOpt: number;
 }

@@ -21,6 +21,10 @@ export class AssessmentsController {
 
   @Post('evaluate')
   evaluateAssessment(@Body() evaluateAssessmentBody: EvaluateAssessmentDto) {
-    return evaluateAssessmentBody;
+    return this.assessmentsService.evaluateAssessment({
+      // todo: figure out how to send the code snippet as a string
+      response: JSON.parse(evaluateAssessmentBody.response),
+      ...evaluateAssessmentBody,
+    });
   }
 }

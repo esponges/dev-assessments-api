@@ -1,12 +1,16 @@
 import { Injectable } from '@nestjs/common';
+
 import { LangchainService } from 'src/langchain/langchain.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
-import { getAssessmentPrompt } from './prompts/assessment';
+import { getAssessmentPrompt, getEvaluateAssessmentPrompt } from './prompts';
 import { displayQuizSchema } from './structured-schema/structured-quiz-schema';
+import { evaluateAssessmentSchema } from './structured-schema/evaluate-assessment-schema';
+import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 
 @Injectable()
 export class AssessmentsService {
-  private readonly schema = displayQuizSchema;
+  private readonly createAssessmentSchema = displayQuizSchema;
+  private readonly evaluateAssessmentSchema = evaluateAssessmentSchema;
   constructor(private readonly langchain: LangchainService) {}
 
   getAssessments(): string {
@@ -14,9 +18,28 @@ export class AssessmentsService {
   }
 
   async createAssessment(details: CreateAssessmentDto) {
-    const prompts = getAssessmentPrompt(details, details.prompt);
+    const prompts = getAssessmentPrompt(details, details.promptOpt);
     const prompt = this.langchain.generatePrompt(prompts.promptMessages);
-    const runnable = this.langchain.getRunnable(this.schema, prompt);
+    const runnable = this.langchain.getRunnable(
+      this.createAssessmentSchema,
+      prompt,
+    );
+
+    const response = await runnable.invoke({
+      description: prompts.description,
+    });
+    return response;
+  }
+
+  // todo: create reusable function for this
+  // it would accept a prompt and a schema
+  async evaluateAssessment(details: EvaluateAssessmentDto) {
+    const prompts = getEvaluateAssessmentPrompt(details);
+    const prompt = this.langchain.generatePrompt(prompts.promptMessages);
+    const runnable = this.langchain.getRunnable(
+      this.evaluateAssessmentSchema,
+      prompt,
+    );
 
     const response = await runnable.invoke({
       description: prompts.description,
