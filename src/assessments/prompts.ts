@@ -74,7 +74,10 @@ export const getEvaluateAssessmentPrompt = ({
   challenge,
   response,
   promptOpt,
-}: EvaluateAssessmentDto): Partial<Prompt> => {
+}: EvaluateAssessmentDto): Partial<Prompt> & {
+  challenge: string;
+  response: string;
+} => {
   // todo: don't use partial but create a type for PromptMessages
   const defaultCase = {
     promptMessages: [
@@ -96,10 +99,12 @@ export const getEvaluateAssessmentPrompt = ({
       - Your evaluation should be fair and unbiased.
       - You should consider the latest best practices and standards.
       
-      The challenge for the developer is: ${challenge}
-      The response from the developer is: ${response}
+      The challenge for the developer is: {challenge}
+      The response from the developer is: {response}
       `,
     ],
+    challenge: `The challenge for the developer is: ${challenge}`,
+    response: `The response from the developer is: ${response}`,
   };
 
   switch (promptOpt) {

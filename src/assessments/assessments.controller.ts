@@ -22,8 +22,8 @@ export class AssessmentsController {
   @Post('evaluate')
   evaluateAssessment(@Body() evaluateAssessmentBody: EvaluateAssessmentDto) {
     return this.assessmentsService.evaluateAssessment({
-      // todo: figure out how to send the code snippet as a string
-      response: JSON.parse(evaluateAssessmentBody.response),
+      // todo: this replace is a temporary workaround to send the response from postman
+      response: evaluateAssessmentBody.response.replaceAll(`'`, `"`),
       ...evaluateAssessmentBody,
     });
   }

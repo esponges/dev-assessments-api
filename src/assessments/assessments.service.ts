@@ -42,7 +42,8 @@ export class AssessmentsService {
     );
 
     const response = await runnable.invoke({
-      description: prompts.description,
+      challenge: prompts.challenge,
+      response: prompts.response,
     });
     return response;
   }
