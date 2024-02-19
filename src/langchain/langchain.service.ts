@@ -15,9 +15,6 @@ export class LangchainService {
     modelName: 'gpt-4',
   });
   private outputParser = new JsonOutputFunctionsParser();
-  private someRandomPrompt = ChatPromptTemplate.fromMessages([
-    ['human', 'Question: {question}'],
-  ]);
 
   constructor() {
     console.log('LangchainService constructor created');
@@ -35,7 +32,7 @@ export class LangchainService {
 
   getRunnable(
     schema: Record<string, any>,
-    prompt: typeof this.someRandomPrompt, // fix this hack
+    prompt: ChatPromptTemplate<any, any>, // fix this hack
   ) {
     const runnable = createStructuredOutputRunnable({
       outputSchema: schema,
