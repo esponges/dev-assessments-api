@@ -97,9 +97,41 @@ export class CandidateService {
   }
 
   async getSimilarCandidates(resume: string) {
-    return this.pineconeService.makeSimilaritySearch(
+    const searchResults = await this.pineconeService.makeSimilaritySearch(
       resume,
       'candidate_tech_stack',
     );
+
+    const ids = searchResults.similaritySearchResults.matches.map(
+      (match) => match.id,
+    );
+
+    const candidates = await this.prismaService.candidateResume.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    // add metadata and score to candidates
+    const candidatesWithMetadata = candidates.map((candidate) => {
+      const match = searchResults.similaritySearchResults.matches.find(
+        (match) => match.id === candidate.id,
+      );
+      return {
+        ...candidate,
+        score: match?.score || 0,
+        metadata: match?.metadata,
+      };
+    });
+
+    // sort by highest score
+    candidatesWithMetadata.sort((a, b) => b.score - a.score);
+
+    return {
+      searchResults,
+      candidates: candidatesWithMetadata,
+    };
   }
 }
