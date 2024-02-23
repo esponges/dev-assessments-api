@@ -82,6 +82,8 @@ export class CandidateService {
             resume: file,
           },
         });
+
+        // todo: upload file to blob storage
       } catch (e) {
         console.error('Error upserting to vector store', e);
       }

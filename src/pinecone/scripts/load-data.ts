@@ -373,3 +373,39 @@ export const fakeDevsResumes = [
   LOGROS ● Diseñó y orquestó la migración completa de una infraestructura on-premise a la nube, logró reducir un 40% de costos anuales. ● Orador en conferencias sobre DevOps y automatización.
   Puedes utilizar estos casos creados como ejemplos para tus pruebas de parseo y evaluación de CVs de candidatos para posiciones en el ámbito del desarrollo y las operaciones de TI.`,
 ];
+
+// feed to the database without requiring prisma
+export const postDevProfiles = async () => {
+  const req = async (resume: string) => {
+    // this endpoint accepts either a file or a string an a description in the body
+    const res = await fetch(
+      'http://localhost:9000/api/candidate/parse_resume',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          resume,
+          upsert: true,
+        }),
+      },
+    );
+
+    return res.json();
+  };
+
+  const PromiseAll = fakeDevsResumes.map(async (resume) => {
+    return await req(resume);
+  });
+
+  return await Promise.all(PromiseAll);
+};
+
+postDevProfiles()
+  .then((res) => {
+    console.log(res);
+  })
+  .catch((e) => {
+    console.error(e);
+  });

@@ -32,10 +32,12 @@ export class LangchainService {
 
   getRunnable(
     schema: Record<string, any>,
-    prompt: ChatPromptTemplate<any, any>, // fix this hack
+    prompt: ChatPromptTemplate<any, any>,
   ) {
     const runnable = createStructuredOutputRunnable({
       outputSchema: schema,
+      // other LLMs can be used here, however I openain is the only
+      // one that supports structured output
       llm: this.chatOpenAI,
       prompt,
       outputParser: this.outputParser,
