@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -38,5 +40,11 @@ export class CandidateController {
   async getSimilarCandidates(@Body() body: SimilarCandidatesDto) {
     // todo implement metadata filtering
     return this.candidateService.getSimilarCandidates(body.description);
+  }
+
+  @Get('details')
+  // query params contain the id
+  async getCandidate(@Query('id') id: string) {
+    return this.candidateService.getCandidate(id);
   }
 }

@@ -134,4 +134,18 @@ export class CandidateService {
       candidates: candidatesWithMetadata,
     };
   }
+
+  async getCandidate(id: string) {
+    const candidate = await this.prismaService.candidateResume.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!candidate) {
+      return `No candidate found with id: ${id}`;
+    }
+
+    return candidate;
+  }
 }
