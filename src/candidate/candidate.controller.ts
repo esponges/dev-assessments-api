@@ -36,7 +36,7 @@ export class CandidateController {
     return this.candidateService.parseResume(content, body.upsert);
   }
 
-  @Post('similar_candidates')
+  @Post('similarity_search')
   async getSimilarCandidates(@Body() body: SimilarCandidatesDto) {
     // todo implement metadata filtering
     return this.candidateService.getSimilarCandidates(body.description);
