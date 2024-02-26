@@ -17,6 +17,7 @@ export const getAssessmentPrompt = (
     ],
     description: 'Full stack golang (backend) and React (front end)',
   };
+  const DEFAULT_DURATION = 30;
 
   const { stack, level, number_of_questions, duration } = details;
 
@@ -68,7 +69,46 @@ export const getAssessmentPrompt = (
           `,
         ],
         description: `An assessment for a ${level} software developer with ${number_of_questions} questions.
-        Should cover all these topics: ${stack.join(', ')} ${duration ? ` that should be completed ${duration} minutes` : ''}`,
+        Should cover all these topics: ${stack.join(', ')} that should be completed in ${duration || DEFAULT_DURATION} minutes`,
+      };
+    case 4:
+      // scenario where stack details are provided, we will no longer provide the `level` of the developer
+      // and the difficulty will be inferred from the experience, and the number of questions will be inferred by
+      // the duration of the assessment and the complexity of the stack
+      const stackList = stack
+        .map((s) => `- ${s.tech}: ${s.experience} years`)
+        .join('\n');
+      return {
+        promptMessages: [
+          'human',
+          `You are an AI assistant for creating unique code assessment for a software developer with the following criteria: {description}
+        
+        You will be provided with a stack of the developer. 
+        The difficulty of each question will be inferred from the experience of each stack.
+        
+        Use the following criteria to generate the questions per stack:
+        - 0-2 years of experience. The questions should be easy and multiple choice, and cover the basics.
+        - 2-5 years of experience. The questions should be moderate and cover the intermediate topics, should be a mix of multiple choice and free response.
+        - 5+ years of experience. The questions should be difficult and cover the advanced topics and should mostly be free response.
+
+        Key guidelines:
+        
+        - The questions should be unique and not repeated.
+        - The questions should be tailored to the level of the stack experience.
+        - The questions should be clear and concise.
+        - The questions should be challenging according to the experience and not generic.
+        - Please use the above criteria to generate the questions.
+
+        Example provided stack:
+        - Golang: 1.5 years
+        - React: 5 years
+
+        Considering this example you would generate 20% of easy questions for Golang and 80% difficult questions for React. 
+        `,
+        ],
+        description: `An assessment for a software developer with the following stack: 
+        \n${stackList} 
+        \nWith ${number_of_questions} questions to be completed in ${duration || DEFAULT_DURATION} minutes`,
       };
   }
   return defaultCase;
