@@ -2,6 +2,15 @@ import { Prompt } from 'src/types';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 
+export const createStackList = (
+  stack: {
+    tech: string;
+    experience: number;
+  }[],
+) => {
+  return stack.map((s) => `- ${s.tech}: ${s.experience} years`).join('\n');
+};
+
 export const getAssessmentPrompt = (
   details?: CreateAssessmentDto,
   type?: number,
@@ -75,9 +84,7 @@ export const getAssessmentPrompt = (
       // scenario where stack details are provided, we will no longer provide the `level` of the developer
       // and the difficulty will be inferred from the experience, and the number of questions will be inferred by
       // the duration of the assessment and the complexity of the stack
-      const stackList = stack
-        .map((s) => `- ${s.tech}: ${s.experience} years`)
-        .join('\n');
+      const stackList = createStackList(stack);
       return {
         promptMessages: [
           'human',

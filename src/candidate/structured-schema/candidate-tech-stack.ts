@@ -15,7 +15,7 @@ export const candidateTechStackSchema = {
           tech: { type: 'string' },
           years_of_experience: { type: 'number' },
         },
-        required: ['tech', 'years_of_experience'],
+        required: ['tech', 'experience'],
       },
     },
   },
@@ -24,6 +24,6 @@ export const candidateTechStackSchema = {
 export type CandidateTechStackSchemaLLMResponse = {
   tech_stack: {
     tech: string;
-    years_of_experience: number;
+    experience: number;
   }[];
 };

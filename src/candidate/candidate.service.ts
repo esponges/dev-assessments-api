@@ -13,6 +13,7 @@ import {
 } from './structured-schema/candidate-tech-stack';
 
 import { type Document } from 'langchain/document';
+import { createStackList } from 'src/assessments/prompts';
 
 // remove spaces, and special characters from string
 function sanitizeString(str: string) {
@@ -70,9 +71,16 @@ export class CandidateService {
       };
 
       try {
-        // todo: make all of these transactional
+        // todo: make all of these transactional (if possible)
+
+        const vectorContent = `
+        ${file}\n 
+        Stack details:\n
+        ${createStackList(response.tech_stack)}
+        `;
+
         await this.pineconeService.upsert(
-          file,
+          vectorContent,
           'candidate_tech_stack',
           metadata,
         );
