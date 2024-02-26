@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { WebPDFLoader } from 'langchain/document_loaders/web/pdf';
 import { randomUUID } from 'crypto';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
@@ -49,6 +49,8 @@ export class CandidateService {
     const prompts = getCandidateTechStackPrompt(
       isBlob ? docs[0].pageContent : file,
     );
+
+    // todo: make the LLM say the candidate level: junior, mid, senior
     const prompt = this.langchain.generatePrompt(prompts.promptMessages);
     const runnable = this.langchain.getRunnable(this.schema, prompt);
 
@@ -79,6 +81,7 @@ export class CandidateService {
           data: {
             id: metadata.id,
             techStack: stack,
+            detailedTechStack: response.tech_stack,
             resume: file,
           },
         });
@@ -143,7 +146,7 @@ export class CandidateService {
     });
 
     if (!candidate) {
-      return `No candidate found with id: ${id}`;
+      throw new HttpException(`Candidate with id ${id} not found`, 404);
     }
 
     return candidate;

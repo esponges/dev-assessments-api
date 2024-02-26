@@ -41,6 +41,7 @@ model CandidateResume {
   // email     String
   resume    String
   techStack String[]
+  detailedTechStack Json @default("[{}]")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   // add a relation to the candidate in the future

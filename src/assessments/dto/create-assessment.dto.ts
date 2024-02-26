@@ -11,7 +11,10 @@ import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateAssessmentDto {
   @IsNotEmpty()
-  stack: string[];
+  stack: {
+    tech: string;
+    experience: number;
+  }[];
   level: string;
   number_of_questions: number;
 

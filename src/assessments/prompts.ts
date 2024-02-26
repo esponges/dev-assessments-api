@@ -6,6 +6,10 @@ export const getAssessmentPrompt = (
   details?: CreateAssessmentDto,
   type?: number,
 ): Prompt => {
+  /* 
+    TODO: Create an assessment considering the experience per technology
+    eg. the candidate is not asked a hard question on a technology they are not proficient in
+    */
   const defaultCase = {
     promptMessages: [
       'human',
