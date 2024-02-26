@@ -13,7 +13,7 @@ export const candidateTechStackSchema = {
         type: 'object',
         properties: {
           tech: { type: 'string' },
-          years_of_experience: { type: 'number' },
+          experience: { type: 'number' },
         },
         required: ['tech', 'experience'],
       },

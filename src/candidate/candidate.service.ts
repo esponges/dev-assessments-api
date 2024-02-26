@@ -81,7 +81,7 @@ export class CandidateService {
 
         await this.pineconeService.upsert(
           vectorContent,
-          'candidate_tech_stack',
+          'candidates',
           metadata,
         );
 
