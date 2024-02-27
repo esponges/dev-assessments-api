@@ -65,6 +65,13 @@ export class CandidateService {
         // remove spaces, and special characters from string for easier metadata filtering
         sanitizeString(tech),
       );
+      const detailedTechStack = response.tech_stack?.map(
+        ({ tech, experience }) => ({
+          tech: sanitizeString(tech),
+          experience: experience,
+        }),
+      );
+
       const metadata = {
         id: randomUUID(),
         tech_stack: stack,
@@ -89,7 +96,7 @@ export class CandidateService {
           data: {
             id: metadata.id,
             techStack: stack,
-            detailedTechStack: response.tech_stack,
+            detailedTechStack,
             resume: file,
           },
         });

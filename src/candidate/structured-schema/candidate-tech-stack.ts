@@ -12,7 +12,11 @@ export const candidateTechStackSchema = {
       items: {
         type: 'object',
         properties: {
-          tech: { type: 'string' },
+          tech: {
+            type: 'string',
+            description:
+              'The technology name - using the most common name. Eg. "React" instead of "ReactJS", "Golang" instead of "Go"',
+          },
           experience: { type: 'number' },
         },
         required: ['tech', 'experience'],
