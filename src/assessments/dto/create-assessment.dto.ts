@@ -7,7 +7,7 @@
 //   "number_of_questions": 10
 //   "duration": "30 minutes"
 // }
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateAssessmentDto {
   @IsNotEmpty()
@@ -15,10 +15,19 @@ export class CreateAssessmentDto {
     tech: string;
     experience: number;
   }[];
-  level: string;
+
+  @IsNotEmpty()
+  promptOpt: number;
+
+  @IsNumber()
+  @IsNotEmpty()
   number_of_questions: number;
 
+  @IsString()
   @IsOptional()
-  duration: string;
-  promptOpt: number;
+  level: string;
+
+  @IsNumber()
+  @IsOptional()
+  duration: number;
 }

@@ -1,9 +1,11 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class SimilarCandidatesDto {
+  @IsString()
   @IsNotEmpty()
   description: string;
 
+  @IsArray()
   @IsOptional()
   metadata: string[];
 }
