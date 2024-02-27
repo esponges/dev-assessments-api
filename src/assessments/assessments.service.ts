@@ -3,15 +3,22 @@ import { Injectable } from '@nestjs/common';
 import { LangchainService } from 'src/langchain/langchain.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { getAssessmentPrompt, getEvaluateAssessmentPrompt } from './prompts';
-import { displayQuizSchema } from './structured-schema/structured-quiz-schema';
+import {
+  CreateAssessmentResponse,
+  createAssessmentSchema,
+} from './structured-schema/structured-quiz-schema';
 import { evaluateAssessmentSchema } from './structured-schema/evaluate-assessment-schema';
 import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AssessmentsService {
-  private readonly createAssessmentSchema = displayQuizSchema;
+  private readonly createAssessmentSchema = createAssessmentSchema;
   private readonly evaluateAssessmentSchema = evaluateAssessmentSchema;
-  constructor(private readonly langchain: LangchainService) {}
+  constructor(
+    private readonly langchain: LangchainService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   getAssessments(): string {
     return 'This will return all assessments';
@@ -25,10 +32,31 @@ export class AssessmentsService {
       prompt,
     );
 
-    const response = await runnable.invoke({
+    const response = (await runnable.invoke({
       description: prompts.description,
+    })) as CreateAssessmentResponse;
+
+    // todo: save the assessment in the database
+    const res = await this.prisma.assessment.create({
+      data: {
+        title: response.title,
+        questions: {
+          createMany: {
+            data: response.questions.map((q) => ({
+              questionText: q.question_text,
+              questionType: q.question_type,
+              choices: q.choices?.length ? q.choices : undefined,
+              correctAnswer: q.correct_answer,
+            })),
+          },
+        },
+      },
     });
-    return response;
+
+    return {
+      ...response,
+      id: res.id,
+    };
   }
 
   // todo: create reusable function for this

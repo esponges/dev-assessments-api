@@ -1,4 +1,4 @@
-export const displayQuizSchema = {
+export const createAssessmentSchema = {
   name: 'display_quiz',
   description:
     "Displays a quiz to the student with multiple choice and free response questions. The student's responses are then returned.",
@@ -25,4 +25,15 @@ export const displayQuizSchema = {
       },
     },
   },
+};
+
+export type CreateAssessmentResponse = {
+  title: string;
+  questions: {
+    question_text: string;
+    question_type: 'MULTIPLE_CHOICE' | 'FREE_RESPONSE';
+    question_topic: string;
+    choices?: string[];
+    correct_answer: string;
+  }[];
 };

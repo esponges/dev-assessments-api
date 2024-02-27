@@ -46,3 +46,37 @@ model CandidateResume {
   updatedAt DateTime @updatedAt
   // add a relation to the candidate in the future
 }
+
+// type Assessment = {
+//   title: string;
+//   questions: {
+//     question_text: string;
+//     question_type: string;
+//     question_topic: string;
+//     choices?: string[];
+//     correct_answer: string;
+//   }[];
+// };
+
+model AssessmentQuestion {
+  id            String   @id @default(uuid())
+  questionText  String
+  questionType  String
+  // figure out how to correctly store the topic
+  // questionTopic String
+  choices       String[]
+  correctAnswer String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  assessmentId  String
+  assessment    Assessment @relation(fields: [assessmentId], references: [id])
+  // todo: add relation to a candidate
+}
+
+model Assessment {
+  id        String   @id @default(uuid())
+  title     String
+  questions AssessmentQuestion[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
