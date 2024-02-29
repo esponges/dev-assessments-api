@@ -2,14 +2,14 @@ import { Injectable } from '@nestjs/common';
 
 import { LangchainService } from 'src/langchain/langchain.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
-import { getAssessmentPrompt, getEvaluateAssessmentPrompt } from './prompts';
+import { getAssessmentPrompt, getEvaluateChallengePrompt } from './prompts';
 import {
   CreateAssessmentResponse,
   createAssessmentSchema,
 } from './structured-schema/structured-quiz-schema';
 import { evaluateAssessmentSchema } from './structured-schema/evaluate-assessment-schema';
-import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 
 @Injectable()
 export class AssessmentsService {
@@ -68,9 +68,9 @@ export class AssessmentsService {
 
   // todo: create reusable function for this
   // it would accept a prompt and a schema
-  async evaluateAssessment(details: EvaluateAssessmentDto) {
+  async evaluateChallenge(details: EvaluateChallengeDto) {
     const { challenge, devResponse, promptMessages } =
-      getEvaluateAssessmentPrompt(details);
+      getEvaluateChallengePrompt(details);
     const prompt = this.langchain.generatePrompt(promptMessages);
     const runnable = this.langchain.getRunnable(
       this.evaluateAssessmentSchema,

@@ -1,6 +1,6 @@
 import { Prompt } from 'src/types';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
-import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
+import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 
 export const createStackList = (
   stack: {
@@ -121,11 +121,11 @@ export const getAssessmentPrompt = (
   return defaultCase;
 };
 
-export const getEvaluateAssessmentPrompt = ({
+export const getEvaluateChallengePrompt = ({
   challenge,
   devResponse,
   promptOpt,
-}: EvaluateAssessmentDto): Partial<Prompt> & {
+}: EvaluateChallengeDto): Partial<Prompt> & {
   challenge: string;
   devResponse: string;
 } => {
