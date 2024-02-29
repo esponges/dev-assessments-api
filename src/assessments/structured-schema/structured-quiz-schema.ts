@@ -28,7 +28,7 @@ export const createAssessmentSchema = {
 };
 
 export type CreateAssessmentResponse = {
-  title: string;
+  title?: string;
   questions: {
     question_text: string;
     question_type: 'MULTIPLE_CHOICE' | 'FREE_RESPONSE';

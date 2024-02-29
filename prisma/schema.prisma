@@ -11,7 +11,7 @@ datasource db {
 }
 
 model QuestionMetadata {
-  id            String   @id @default(uuid())
+  id            String    @id @default(uuid())
   question_type String
   topic         String // main technology such   as React, GraphQL, etc
   // we'd probably need subtopics like librarier, frameworks, etc
@@ -20,12 +20,12 @@ model QuestionMetadata {
 }
 
 model Question {
-  id        String   @id @default(uuid())
-  content   String
-  createdAt DateTime @default(now())
-  metadataId String   @unique
+  id         String           @id @default(uuid())
+  content    String
+  createdAt  DateTime         @default(now())
+  metadataId String           @unique
   metadata   QuestionMetadata @relation(fields: [metadataId], references: [id])
-  updatedAt DateTime @updatedAt
+  updatedAt  DateTime         @updatedAt
 }
 
 // future model for a Candidate - should be improved
@@ -36,14 +36,14 @@ model Question {
 //   }
 
 model CandidateResume {
-  id        String   @id @default(uuid())
+  id                String   @id @default(uuid())
   // name      String
   // email     String
-  resume    String
-  techStack String[]
-  detailedTechStack Json @default("[{}]")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  resume            String
+  techStack         String[]
+  detailedTechStack Json     @default("[{}]")
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
   // add a relation to the candidate in the future
 }
 
@@ -59,25 +59,25 @@ model CandidateResume {
 // };
 
 model AssessmentQuestion {
-  id            String   @id @default(uuid())
-  questionText  String
-  questionType  String
+  id            String     @id @default(uuid())
+  text          String     @default("")
+  type          String     @default("")
   // figure out how to correctly store the topic
   // questionTopic String
   // should choices be a json array with ids? probably a relation to a separate model
   choices       String[]
   correctAnswer String
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   assessmentId  String
   assessment    Assessment @relation(fields: [assessmentId], references: [id])
   // todo: add relation to a candidate
 }
 
 model Assessment {
-  id        String   @id @default(uuid())
+  id        String               @id @default(uuid())
   title     String
   questions AssessmentQuestion[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
 }
