@@ -117,7 +117,7 @@ export class CandidateService {
   async getSimilarCandidates(resume: string) {
     const searchResults = await this.pineconeService.makeSimilaritySearch(
       resume,
-      'candidate_tech_stack',
+      'candidates',
     );
 
     const ids = searchResults.similaritySearchResults.matches.map(
