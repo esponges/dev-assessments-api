@@ -5,7 +5,7 @@ import { Type } from 'class-transformer';
 class Question {
   id: string;
   answer: string;
-  selectedAnswer: string;
+  question: string;
 }
 
 export class EvaluateAssessmentDto {
