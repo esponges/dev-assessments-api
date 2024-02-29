@@ -15,11 +15,14 @@ import { evaluateChallengeSchema } from './structured-schema/evaluate-challenge-
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
+import { evaluateAssessmentSchema } from './structured-schema/evaluate-assessment-schema';
 
 @Injectable()
 export class AssessmentsService {
   private readonly createAssessmentSchema = createAssessmentSchema;
-  private readonly evaluateAssessmentSchema = evaluateChallengeSchema;
+  private readonly evaluateChallengeSchema = evaluateChallengeSchema;
+  private readonly evaluateAssessmentSchema = evaluateAssessmentSchema;
+
   constructor(
     private readonly langchain: LangchainService,
     private readonly prisma: PrismaService,
@@ -78,7 +81,7 @@ export class AssessmentsService {
       getEvaluateChallengePrompt(details);
     const prompt = this.langchain.generatePrompt(promptMessages);
     const runnable = this.langchain.getRunnable(
-      this.evaluateAssessmentSchema,
+      this.evaluateChallengeSchema,
       prompt,
     );
 

@@ -31,6 +31,6 @@ export class AssessmentsController {
 
   @Post('evaluate/questions')
   evaluateAssessment(@Body() evaluateAssessmentBody: EvaluateAssessmentDto) {
-    console.log(evaluateAssessmentBody);
+    return this.assessmentsService.evaluateAssessment(evaluateAssessmentBody);
   }
 }

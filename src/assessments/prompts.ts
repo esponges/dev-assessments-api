@@ -193,10 +193,7 @@ export const getEvaluateAssessmentPrompt = (
       The assessment with their respective responses are: {assessment}`,
     ],
     assessment: evaluateAssessmentBody.questions
-      .map(
-        (q) =>
-          `Question: ${q.id}, Answer: ${q.answer}, Selected Answer: ${q.selectedAnswer}`,
-      )
+      .map((q) => `Id: ${q.id}, Question: ${q.question}, Answer: ${q.answer}`)
       .join('\n'),
   };
 };
