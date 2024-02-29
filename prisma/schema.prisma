@@ -64,6 +64,7 @@ model AssessmentQuestion {
   questionType  String
   // figure out how to correctly store the topic
   // questionTopic String
+  // should choices be a json array with ids? probably a relation to a separate model
   choices       String[]
   correctAnswer String
   createdAt     DateTime @default(now())

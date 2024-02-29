@@ -36,10 +36,11 @@ export class AssessmentsService {
       description: prompts.description,
     })) as CreateAssessmentResponse;
 
-    // todo: save the assessment in the database
+    // todo: save the questions to the vector db
+    // this way in the future we can reuse questions
     const res = await this.prisma.assessment.create({
       data: {
-        title: response.title,
+        title: response.title || 'Assessment',
         questions: {
           createMany: {
             data: response.questions.map((q) => ({
@@ -53,10 +54,16 @@ export class AssessmentsService {
       },
     });
 
-    return {
-      ...response,
-      id: res.id,
-    };
+    const assessment = await this.prisma.assessment.findUnique({
+      where: {
+        id: res.id,
+      },
+      include: {
+        questions: true,
+      },
+    });
+
+    return assessment;
   }
 
   // todo: create reusable function for this
