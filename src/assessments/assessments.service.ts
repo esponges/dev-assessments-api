@@ -2,19 +2,24 @@ import { Injectable } from '@nestjs/common';
 
 import { LangchainService } from 'src/langchain/langchain.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
-import { getAssessmentPrompt, getEvaluateChallengePrompt } from './prompts';
+import {
+  getAssessmentPrompt,
+  getEvaluateChallengePrompt,
+  getEvaluateAssessmentPrompt,
+} from './prompts';
 import {
   CreateAssessmentResponse,
   createAssessmentSchema,
 } from './structured-schema/structured-quiz-schema';
-import { evaluateAssessmentSchema } from './structured-schema/evaluate-assessment-schema';
+import { evaluateChallengeSchema } from './structured-schema/evaluate-challenge-schema';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
+import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 
 @Injectable()
 export class AssessmentsService {
   private readonly createAssessmentSchema = createAssessmentSchema;
-  private readonly evaluateAssessmentSchema = evaluateAssessmentSchema;
+  private readonly evaluateAssessmentSchema = evaluateChallengeSchema;
   constructor(
     private readonly langchain: LangchainService,
     private readonly prisma: PrismaService,
@@ -81,6 +86,19 @@ export class AssessmentsService {
       challenge,
       devResponse,
     });
+
+    return response;
+  }
+
+  async evaluateAssessment(details: EvaluateAssessmentDto) {
+    const { promptMessages, assessment } = getEvaluateAssessmentPrompt(details);
+    const prompt = this.langchain.generatePrompt(promptMessages);
+    const runnable = this.langchain.getRunnable(
+      this.evaluateAssessmentSchema,
+      prompt,
+    );
+
+    const response = await runnable.invoke({ assessment });
 
     return response;
   }

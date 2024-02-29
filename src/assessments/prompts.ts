@@ -1,6 +1,7 @@
 import { Prompt } from 'src/types';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
+import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 
 export const createStackList = (
   stack: {
@@ -163,4 +164,39 @@ export const getEvaluateChallengePrompt = ({
     default:
       return defaultCase;
   }
+};
+
+export const getEvaluateAssessmentPrompt = (
+  evaluateAssessmentBody: EvaluateAssessmentDto,
+): Partial<Prompt> & {
+  assessment: string;
+} => {
+  return {
+    promptMessages: [
+      'human',
+      `You are an AI assistant for evaluating the response of a software developer to an assessment questions
+
+      Please use the following criteria:
+      The response will be evaluated based on the following criteria:
+      - should be as closest as possible to the canonical answers
+      - should consider the latest best practices and standards
+      - should use your knowledge of the language and the framework to evaluate the response
+
+      The score will be returned in the 0-100 range, with 100 being the best score.
+      
+      Key guidelines:
+      - Your feedback should be clear and concise.
+      - You will use your knowledge of the language and the framework to evaluate the response.
+      - Your evaluation should be fair and unbiased.
+      - You should consider the latest best practices and standards.
+      
+      The assessment with their respective responses are: {assessment}`,
+    ],
+    assessment: evaluateAssessmentBody.questions
+      .map(
+        (q) =>
+          `Question: ${q.id}, Answer: ${q.answer}, Selected Answer: ${q.selectedAnswer}`,
+      )
+      .join('\n'),
+  };
 };
