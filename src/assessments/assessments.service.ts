@@ -94,7 +94,41 @@ export class AssessmentsService {
   }
 
   async evaluateAssessment(details: EvaluateAssessmentDto) {
-    const { promptMessages, assessment } = getEvaluateAssessmentPrompt(details);
+    // get the questions from the database using the ids
+    // and ignore the choices field
+    const questions = await this.prisma.assessmentQuestion.findMany({
+      where: {
+        id: {
+          in: details.questions.map((q) => q.id),
+        },
+      },
+      select: {
+        id: true,
+        type: true,
+        text: true,
+        correctAnswer: true,
+      },
+    });
+
+    // match the questions with the answers from the details
+    const questionsWithDevAnswers = questions.map((q) => ({
+      ...q,
+      answer: details.questions.find((a) => a.id === q.id)?.answer,
+    }));
+
+    const freeResponseQuestions = questionsWithDevAnswers.filter(
+      (q) => q.type === 'FREE_RESPONSE',
+    );
+
+    // evaluate only the free response questions
+    const { promptMessages, assessment } = getEvaluateAssessmentPrompt({
+      questions: freeResponseQuestions.map((q) => ({
+        id: q.id,
+        answer: q.answer,
+        question: q.text,
+      })),
+    });
+
     const prompt = this.langchain.generatePrompt(promptMessages);
     const runnable = this.langchain.getRunnable(
       this.evaluateAssessmentSchema,

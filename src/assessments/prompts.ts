@@ -1,7 +1,7 @@
 import { Prompt } from 'src/types';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
-import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
+import { AssessmentQuestion } from 'src/models';
 
 export const createStackList = (
   stack: {
@@ -166,9 +166,9 @@ export const getEvaluateChallengePrompt = ({
   }
 };
 
-export const getEvaluateAssessmentPrompt = (
-  evaluateAssessmentBody: EvaluateAssessmentDto,
-): Partial<Prompt> & {
+export const getEvaluateAssessmentPrompt = (evaluateAssessmentBody: {
+  questions: Array<AssessmentQuestion & { question: string }>;
+}): Partial<Prompt> & {
   assessment: string;
 } => {
   return {

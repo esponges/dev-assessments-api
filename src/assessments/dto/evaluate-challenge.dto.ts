@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class EvaluateChallengeDto {
   @IsString()
@@ -13,7 +13,7 @@ export class EvaluateChallengeDto {
   @IsNotEmpty()
   devResponse: string;
 
-  @IsNotEmpty()
   @IsNumber()
+  @IsOptional()
   promptOpt: number;
 }
