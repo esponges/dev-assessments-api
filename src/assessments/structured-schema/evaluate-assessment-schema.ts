@@ -28,3 +28,11 @@ export const evaluateAssessmentSchema = {
     },
   },
 };
+
+export type EvaluateAssessmentResponse = {
+  questionsEvaluation: {
+    question_id: string;
+    score: number;
+    feedback_message: string;
+  }[];
+};

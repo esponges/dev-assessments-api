@@ -15,7 +15,10 @@ import { evaluateChallengeSchema } from './structured-schema/evaluate-challenge-
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
-import { evaluateAssessmentSchema } from './structured-schema/evaluate-assessment-schema';
+import {
+  EvaluateAssessmentResponse,
+  evaluateAssessmentSchema,
+} from './structured-schema/evaluate-assessment-schema';
 
 @Injectable()
 export class AssessmentsService {
@@ -94,8 +97,6 @@ export class AssessmentsService {
   }
 
   async evaluateAssessment(details: EvaluateAssessmentDto) {
-    // get the questions from the database using the ids
-    // and ignore the choices field
     const questions = await this.prisma.assessmentQuestion.findMany({
       where: {
         id: {
@@ -135,8 +136,39 @@ export class AssessmentsService {
       prompt,
     );
 
-    const response = await runnable.invoke({ assessment });
+    const freeResponseEvaluationResponse = (await runnable.invoke({
+      assessment,
+    })) as EvaluateAssessmentResponse;
 
-    return response;
+    // join the free response evaluation back with the multiple choice questions
+    let totalScore = 0;
+    const allQuestionsEvaluation = questionsWithDevAnswers.map((q) => {
+      if (q.type === 'FREE_RESPONSE') {
+        const evaluation =
+          freeResponseEvaluationResponse.questionsEvaluation.find(
+            (e) => e.question_id === q.id,
+          );
+
+        totalScore += evaluation?.score || 0;
+        return {
+          ...q,
+          score: evaluation?.score,
+          feedbackMessage: evaluation?.feedback_message,
+        };
+      } else {
+        const score = q.answer === q.correctAnswer ? 100 : 0;
+        totalScore += score;
+        return {
+          ...q,
+          score,
+          feedbackMessage: 'N/A',
+        };
+      }
+    });
+
+    return {
+      totalScore: totalScore / questions.length,
+      questionsEvaluation: allQuestionsEvaluation,
+    };
   }
 }
