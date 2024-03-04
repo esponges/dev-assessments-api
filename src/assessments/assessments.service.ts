@@ -23,6 +23,7 @@ import {
   type EvaluateAssessmentResponse,
   evaluateAssessmentSchema,
 } from './structured-schema/assessment-schemas';
+import { Prompt } from 'src/types';
 
 @Injectable()
 export class AssessmentsService {
@@ -82,37 +83,37 @@ export class AssessmentsService {
     return assessment;
   }
 
-  // todo: create reusable function for this
-  // it would accept a prompt and a schema
   async evaluateChallenge(details: EvaluateChallengeDto) {
-    const { challenge, devResponse, promptMessages } =
-      getEvaluateChallengePrompt(details);
-    const prompt = this.langchain.generatePrompt(promptMessages);
-    const runnable = this.langchain.getRunnable(
-      this.evaluateChallengeSchema,
-      prompt,
-    );
+    const response =
+      await this.langchain.getStructuredResponse<EvaluateChallengeDto>(
+        details,
+        this.evaluateChallengeSchema,
+        getEvaluateChallengePrompt,
+      );
 
-    const response = await runnable.invoke({
-      challenge,
-      devResponse,
-    });
+    return response;
+  }
+
+  async getStructuredResponse<T>(
+    args: T,
+    schema: Record<string, unknown>,
+    promptGenerator: (args: T) => Partial<Prompt>,
+  ) {
+    const { promptMessages, ...context } = promptGenerator(args);
+    const prompt = this.langchain.generatePrompt(promptMessages);
+    const runnable = this.langchain.getRunnable(schema, prompt);
+
+    const response = await runnable.invoke({ ...context });
 
     return response;
   }
 
   async createChallenge(experience: string) {
-    const { promptMessages, description } =
-      getCreateChallengePrompt(experience);
-    const prompt = this.langchain.generatePrompt(promptMessages);
-    const runnable = this.langchain.getRunnable(
+    const response = await this.langchain.getStructuredResponse<string>(
+      experience,
       this.createChallengeSchema,
-      prompt,
+      getCreateChallengePrompt,
     );
-
-    const response = await runnable.invoke({
-      description: description,
-    });
 
     return response;
   }

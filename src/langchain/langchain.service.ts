@@ -6,7 +6,9 @@ import {
   ChatPromptTemplate,
   type BaseMessagePromptTemplateLike,
 } from '@langchain/core/prompts';
-import { InputValues } from '@langchain/core/utils/types';
+import { type InputValues } from '@langchain/core/utils/types';
+
+import { Prompt } from 'src/types';
 
 @Injectable({})
 export class LangchainService {
@@ -44,6 +46,20 @@ export class LangchainService {
     });
 
     return runnable;
+  }
+
+  async getStructuredResponse<T, R = void>(
+    args: T,
+    schema: Record<string, unknown>,
+    promptGenerator: (args: T) => Partial<Prompt>,
+  ) {
+    const { promptMessages, ...context } = promptGenerator(args);
+    const prompt = this.generatePrompt(promptMessages);
+    const runnable = this.getRunnable(schema, prompt);
+
+    const response = (await runnable.invoke({ ...context })) as R;
+
+    return response;
   }
 
   getClient() {
