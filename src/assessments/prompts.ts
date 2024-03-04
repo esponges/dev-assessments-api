@@ -241,10 +241,11 @@ export const getCreateChallengePrompt = (
       
       Use the following criteria to generate the problem:\n
       - For developers with 0-2 years of experience in the specified technology, create a problem focusing on fundamental concepts.\n
-      - For developers with 2-5 years of experience, generate a problem covering intermediate topics.\n
-      - For developers with 5+ years of experience, create a challenging problem focusing on advanced topics.\n\n
+      - For developers with 2-7 years of experience, generate a problem covering intermediate topics.\n
+      - For developers with 7+ years of experience, create a challenging problem focusing on advanced topics.\n\n
       
       Key guidelines:\n
+      - The task should be solvable offline (white-boarding) and without any kind of compiler or IDE.\n
       - Ensure the problem is unique and not repeated.\n
       - Tailor the problem to the level of experience with the specified technology.\n
       - The problem should be solvable within 30 minutes, preferably with code or partial pseudocode.\n\n
