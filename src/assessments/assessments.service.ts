@@ -23,7 +23,6 @@ import {
   type EvaluateAssessmentResponse,
   evaluateAssessmentSchema,
 } from './structured-schema/assessment-schemas';
-import { Prompt } from 'src/types';
 
 @Injectable()
 export class AssessmentsService {
@@ -42,20 +41,14 @@ export class AssessmentsService {
   }
 
   async createAssessment(details: CreateAssessmentDto) {
-    const prompts = getAssessmentPrompt(details, details.promptOpt);
-    const prompt = this.langchain.generatePrompt(prompts.promptMessages);
-    const runnable = this.langchain.getRunnable(
-      this.createAssessmentSchema,
-      prompt,
-    );
-
-    const response = (await runnable.invoke({
-      description: prompts.description,
-    })) as CreateAssessmentResponse;
+    const response = await this.langchain.getStructuredResponse<
+      CreateAssessmentDto,
+      CreateAssessmentResponse
+    >(details, this.createAssessmentSchema, getAssessmentPrompt);
 
     // todo: save the questions to the vector db
     // this way in the future we can reuse questions
-    const res = await this.prisma.assessment.create({
+    const newAssessment = await this.prisma.assessment.create({
       data: {
         title: response.title || 'Assessment',
         questions: {
@@ -73,7 +66,7 @@ export class AssessmentsService {
 
     const assessment = await this.prisma.assessment.findUnique({
       where: {
-        id: res.id,
+        id: newAssessment.id,
       },
       include: {
         questions: true,
@@ -90,20 +83,6 @@ export class AssessmentsService {
         this.evaluateChallengeSchema,
         getEvaluateChallengePrompt,
       );
-
-    return response;
-  }
-
-  async getStructuredResponse<T>(
-    args: T,
-    schema: Record<string, unknown>,
-    promptGenerator: (args: T) => Partial<Prompt>,
-  ) {
-    const { promptMessages, ...context } = promptGenerator(args);
-    const prompt = this.langchain.generatePrompt(promptMessages);
-    const runnable = this.langchain.getRunnable(schema, prompt);
-
-    const response = await runnable.invoke({ ...context });
 
     return response;
   }
