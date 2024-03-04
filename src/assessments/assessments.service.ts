@@ -11,7 +11,7 @@ import {
 import {
   CreateAssessmentResponse,
   createAssessmentSchema,
-} from './structured-schema/structured-quiz-schema';
+} from './structured-schema/assessment-schemas';
 import {
   evaluateChallengeSchema,
   createChallengeSchema,
@@ -22,7 +22,7 @@ import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 import {
   type EvaluateAssessmentResponse,
   evaluateAssessmentSchema,
-} from './structured-schema/evaluate-assessment-schema';
+} from './structured-schema/assessment-schemas';
 
 @Injectable()
 export class AssessmentsService {
@@ -105,7 +105,6 @@ export class AssessmentsService {
     const { promptMessages, description } =
       getCreateChallengePrompt(experience);
     const prompt = this.langchain.generatePrompt(promptMessages);
-    // todo: add schema
     const runnable = this.langchain.getRunnable(
       this.createChallengeSchema,
       prompt,
