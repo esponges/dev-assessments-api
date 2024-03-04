@@ -22,14 +22,14 @@ export class AssessmentsController {
     return this.assessmentsService.createAssessment(createAssessmentBody);
   }
 
-  @Post('create/challenge')
+  @Post('challenge/create')
   createChallenge(@Body() createChallengeBody: CreateChallengeDto) {
     return this.assessmentsService.createChallenge(
       createChallengeBody.experience,
     );
   }
 
-  @Post('evaluate/challenge')
+  @Post('challenge/evaluate')
   evaluateChallenge(@Body() evaluateAssessmentBody: EvaluateChallengeDto) {
     return this.assessmentsService.evaluateChallenge({
       // todo: this replace is a temporary workaround to send the response from postman
@@ -38,7 +38,7 @@ export class AssessmentsController {
     });
   }
 
-  @Post('evaluate/questions')
+  @Post('questions/evaluate')
   evaluateAssessment(@Body() evaluateAssessmentBody: EvaluateAssessmentDto) {
     return this.assessmentsService.evaluateAssessment(evaluateAssessmentBody);
   }
