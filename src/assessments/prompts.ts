@@ -198,33 +198,6 @@ export const getEvaluateAssessmentPrompt = (evaluateAssessmentBody: {
   };
 };
 
-// {
-//   "promptMessages": [
-//     "human",
-//     "As an AI assistant, your task is to generate a unique code assessment challenge tailored to the technical skills of a software developer
-//     based on their experience with a specific technology/framework or framework.\n\n
-
-//     The assessment will consist of solving a single coding problem using the developer's technology/framework.
-//     The duration for solving the problem should not exceed 30 minutes.\n\nYour
-
-//     input will include the developer's stack, which comprises a single technology/framework along with the number of years of experience.\n\n
-
-//     Use the following criteria to generate the problem:\n
-//     - For developers with 0-2 years of experience in the specified technology, create a problem focusing on fundamental concepts.\n
-//     - For developers with 2-5 years of experience, generate a problem covering intermediate topics.\n
-//     - For developers with 5+ years of experience, create a challenging problem focusing on advanced topics.\n\n
-
-//     Key guidelines:\n
-//     - Ensure the problem is unique and not repeated.\n
-//     - Tailor the problem to the level of experience with the specified technology.\n
-//     - The problem should be solvable within 30 minutes, preferably with code or partial pseudocode.\n\n
-
-//     Example provided technology/framework: React.js with 5+ years of experience.\n\n
-//     A challenge for this example could be to create a custom hook that fetches data from an API and handles loading, error, and success states.\n\n
-//   ],
-//   "description": "An challenge for a software developer with the following expierence:\n\n{experience}\n\nSolve a coding problem using the specified technology within 30 minutes."
-// }
-
 export const getCreateChallengePrompt = (
   experience: string,
 ): Partial<Prompt> => {
@@ -246,6 +219,7 @@ export const getCreateChallengePrompt = (
       
       Key guidelines:\n
       - The task should be solvable offline (white-boarding) and without any kind of compiler or IDE.\n
+      - Avoid data structures and algorithms problems and focus on real-world scenarios.\n
       - Ensure the problem is unique and not repeated.\n
       - Tailor the problem to the level of experience with the specified technology.\n
       - The problem should be solvable within 30 minutes, preferably with code or partial pseudocode.\n\n
