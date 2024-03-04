@@ -232,7 +232,7 @@ export const getCreateChallengePrompt = (
     promptMessages: [
       'human',
       `As an AI assistant, your task is to generate a unique code assessment challenge tailored to the technical skills of a software developer 
-      based on their experience with a specific technology/framework.\n\n
+      based on their experience with a specific technology/framework: {description}\n\n
       
       The assessment will consist of solving a single coding problem using the developer's technology/framework. 
       The duration for solving the problem should not exceed 30 minutes.\n\nYour 
