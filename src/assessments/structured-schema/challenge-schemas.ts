@@ -44,3 +44,18 @@ export const evaluateChallengeSchema = {
     'feedback_message',
   ],
 };
+
+// todo: rename file to `challenge-schema.ts`
+export const createChallengeSchema = {
+  name: 'create_challenge',
+  description:
+    'Creates a challenge for the developer to solve. This challenge is usually a coding challenge.',
+  type: 'object',
+  properties: {
+    challenge: {
+      type: 'string',
+      description: 'The challenge that the developer has to solve.',
+    },
+  },
+  required: ['challenge'],
+};

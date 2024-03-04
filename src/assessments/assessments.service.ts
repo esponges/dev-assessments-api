@@ -6,17 +6,21 @@ import {
   getAssessmentPrompt,
   getEvaluateChallengePrompt,
   getEvaluateAssessmentPrompt,
+  getCreateChallengePrompt,
 } from './prompts';
 import {
   CreateAssessmentResponse,
   createAssessmentSchema,
 } from './structured-schema/structured-quiz-schema';
-import { evaluateChallengeSchema } from './structured-schema/evaluate-challenge-schema';
+import {
+  evaluateChallengeSchema,
+  createChallengeSchema,
+} from './structured-schema/challenge-schemas';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
 import {
-  EvaluateAssessmentResponse,
+  type EvaluateAssessmentResponse,
   evaluateAssessmentSchema,
 } from './structured-schema/evaluate-assessment-schema';
 
@@ -25,6 +29,7 @@ export class AssessmentsService {
   private readonly createAssessmentSchema = createAssessmentSchema;
   private readonly evaluateChallengeSchema = evaluateChallengeSchema;
   private readonly evaluateAssessmentSchema = evaluateAssessmentSchema;
+  private readonly createChallengeSchema = createChallengeSchema;
 
   constructor(
     private readonly langchain: LangchainService,
@@ -96,6 +101,23 @@ export class AssessmentsService {
     return response;
   }
 
+  async createChallenge(experience: string) {
+    const { promptMessages, description } =
+      getCreateChallengePrompt(experience);
+    const prompt = this.langchain.generatePrompt(promptMessages);
+    // todo: add schema
+    const runnable = this.langchain.getRunnable(
+      this.createChallengeSchema,
+      prompt,
+    );
+
+    const response = await runnable.invoke({
+      description: description,
+    });
+
+    return response;
+  }
+
   async evaluateAssessment(details: EvaluateAssessmentDto) {
     const questions = await this.prisma.assessmentQuestion.findMany({
       where: {
@@ -142,7 +164,7 @@ export class AssessmentsService {
 
     // join the free response evaluation back with the multiple choice questions
     let totalScore = 0;
-    const allQuestionsEvaluation = questionsWithDevAnswers.map((q) => {
+    const evaluatedAssessment = questionsWithDevAnswers.map((q) => {
       if (q.type === 'FREE_RESPONSE') {
         const evaluation =
           freeResponseEvaluationResponse.questionsEvaluation.find(
@@ -168,7 +190,7 @@ export class AssessmentsService {
 
     return {
       totalScore: totalScore / questions.length,
-      questionsEvaluation: allQuestionsEvaluation,
+      evaluatedAssessment,
     };
   }
 }

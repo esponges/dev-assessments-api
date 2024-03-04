@@ -5,6 +5,7 @@ import { AssessmentsService } from './assessments.service';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 import { EvaluateAssessmentDto } from './dto/evaluate-assessment.dto';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
 
 @Controller('assessments')
 export class AssessmentsController {
@@ -15,9 +16,17 @@ export class AssessmentsController {
     return this.assessmentsService.getAssessments();
   }
 
+  // todo: probably rename to create/questions
   @Post('create')
   createAssessment(@Body() createAssessmentBody: CreateAssessmentDto) {
     return this.assessmentsService.createAssessment(createAssessmentBody);
+  }
+
+  @Post('create/challenge')
+  createChallenge(@Body() createChallengeBody: CreateChallengeDto) {
+    return this.assessmentsService.createChallenge(
+      createChallengeBody.experience,
+    );
   }
 
   @Post('evaluate/challenge')
