@@ -29,9 +29,10 @@ export class CandidateService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  async parseResume(file: Blob | string, upsertToVectorStore?: boolean) {
+  async parseResume(file: Blob | string, userId: string, upsert?: boolean) {
     const isBlob = file instanceof Blob;
     let docs: Document[];
+    let content: string;
     let loader: WebPDFLoader;
 
     if (isBlob) {
@@ -39,11 +40,17 @@ export class CandidateService {
         splitPages: false,
       });
       docs = await loader.load();
+
+      // for the db
+      docs.forEach((doc) => {
+        content += doc.pageContent;
+      });
     } else {
       const splitter = new RecursiveCharacterTextSplitter({
         chunkSize: 1000,
         chunkOverlap: 1,
       });
+      content = file;
       docs = await splitter.createDocuments([file]);
     }
 
@@ -59,8 +66,7 @@ export class CandidateService {
       description: prompts.description,
     })) as CandidateTechStackSchemaLLMResponse;
 
-    // todo: also accept blobs
-    if (upsertToVectorStore && !isBlob && response.tech_stack) {
+    if (upsert && response.tech_stack) {
       const stack = response.tech_stack?.map(({ tech }) =>
         // remove spaces, and special characters from string for easier metadata filtering
         sanitizeString(tech),
@@ -97,7 +103,8 @@ export class CandidateService {
             id: metadata.id,
             techStack: stack,
             detailedTechStack,
-            resume: file,
+            resume: content,
+            userId,
           },
         });
 
@@ -110,7 +117,7 @@ export class CandidateService {
     return {
       originalParsedDocs: docs,
       LLMParsedResponse: response,
-      upserted: upsertToVectorStore && !isBlob,
+      upserted: upsert && !isBlob,
     };
   }
 

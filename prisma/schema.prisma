@@ -37,13 +37,14 @@ model Question {
 
 model CandidateResume {
   id                String   @id @default(uuid())
-  // name      String
-  // email     String
+  userId            String   @default("anonymous")
   resume            String
   techStack         String[]
   detailedTechStack Json     @default("[{}]")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+
+  @@index([userId])
   // add a relation to the candidate in the future
 }
 
