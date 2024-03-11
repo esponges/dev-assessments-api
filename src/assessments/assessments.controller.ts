@@ -30,11 +30,11 @@ export class AssessmentsController {
   }
 
   @Post('challenge/evaluate')
-  evaluateChallenge(@Body() evaluateAssessmentBody: EvaluateChallengeDto) {
+  evaluateChallenge(@Body() evaluateChallengeBody: EvaluateChallengeDto) {
     return this.assessmentsService.evaluateChallenge({
       // todo: this replace is a temporary workaround to send the response from postman
-      devResponse: evaluateAssessmentBody.devResponse.replaceAll(`'`, `"`),
-      ...evaluateAssessmentBody,
+      devResponse: evaluateChallengeBody.devResponse.replaceAll(`'`, `"`),
+      ...evaluateChallengeBody,
     });
   }
 

@@ -84,6 +84,7 @@ export class AssessmentsService {
         getEvaluateChallengePrompt,
       );
 
+    // todo: save in challenge along with the response
     return response;
   }
 

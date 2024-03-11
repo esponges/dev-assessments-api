@@ -17,7 +17,7 @@ import { SimilarCandidatesDto } from './dto/similar-candidates.dto';
 export class CandidateController {
   constructor(private readonly candidateService: CandidateService) {}
 
-  @Post('parse_resume')
+  @Post('resume/parse')
   @UseInterceptors(FileInterceptor('file'))
   parseResume(
     @UploadedFile() file?: Express.Multer.File,
