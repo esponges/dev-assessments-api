@@ -1,7 +1,6 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { WebPDFLoader } from 'langchain/document_loaders/web/pdf';
 import { randomUUID } from 'crypto';
-import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 
 import { LangchainService } from 'src/langchain/langchain.service';
 import { PineconeService } from 'src/pinecone/pinecone.service';
@@ -12,7 +11,6 @@ import {
   candidateTechStackSchema,
 } from './structured-schema/candidate-tech-stack';
 
-import { type Document } from 'langchain/document';
 import { createStackList } from 'src/assessments/prompts';
 
 // remove spaces, and special characters from string
@@ -29,34 +27,19 @@ export class CandidateService {
     private readonly prismaService: PrismaService,
   ) {}
 
-  async parseResume(file: Blob | string, userId: string, upsert?: boolean) {
+  async parseResume(file: Blob, userId: string, upsert?: boolean) {
     const isBlob = file instanceof Blob;
-    let docs: Document[];
-    let content: string;
-    let loader: WebPDFLoader;
 
-    if (isBlob) {
-      loader = new WebPDFLoader(file, {
-        splitPages: false,
-      });
-      docs = await loader.load();
+    const loader = new WebPDFLoader(file, {
+      splitPages: false,
+    });
+    const docs = await loader.load();
 
-      // for the db
-      docs.forEach((doc) => {
-        content += doc.pageContent;
-      });
-    } else {
-      const splitter = new RecursiveCharacterTextSplitter({
-        chunkSize: 1000,
-        chunkOverlap: 1,
-      });
-      content = file;
-      docs = await splitter.createDocuments([file]);
-    }
+    // we'll have only one document since we're not splitting pages
+    // also, we'll remove new lines and carriage returns from the content
+    const stringContent = docs[0].pageContent.replace(/(\r\n|\n|\r)/gm, ' ');
 
-    const prompts = getCandidateTechStackPrompt(
-      isBlob ? docs[0].pageContent : file,
-    );
+    const prompts = getCandidateTechStackPrompt(stringContent);
 
     // todo: make the LLM say the candidate level: junior, mid, senior
     const prompt = this.langchain.generatePrompt(prompts.promptMessages);
@@ -103,7 +86,7 @@ export class CandidateService {
             id: metadata.id,
             techStack: stack,
             detailedTechStack,
-            resume: content,
+            resume: stringContent,
             userId,
           },
         });
