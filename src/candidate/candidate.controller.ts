@@ -6,12 +6,14 @@ import {
   Query,
   UploadedFile,
   UseInterceptors,
+  ValidationPipe,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CandidateService } from './candidate.service';
 import { ParseResumeDto } from './dto/parse-resume.dto';
 import { SimilarCandidatesDto } from './dto/similar-candidates.dto';
+import { CandidateDetailsDto } from './dto/candidate-details.dto';
 
 @Controller('candidate')
 export class CandidateController {
@@ -38,7 +40,16 @@ export class CandidateController {
 
   @Get('details')
   // query params contain the id
-  async getCandidate(@Query('id') id: string) {
-    return this.candidateService.getCandidate(id);
+  async getCandidate(
+    @Query(
+      new ValidationPipe({
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+        forbidNonWhitelisted: true,
+      }),
+    )
+    query: CandidateDetailsDto,
+  ) {
+    return this.candidateService.getCandidate(query.id);
   }
 }

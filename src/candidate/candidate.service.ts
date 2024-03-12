@@ -144,16 +144,16 @@ export class CandidateService {
   }
 
   async getCandidate(id: string) {
-    const candidate = await this.prismaService.candidateResume.findUnique({
+    const resumes = await this.prismaService.candidateResume.findMany({
       where: {
-        id,
+        userId: id,
       },
     });
 
-    if (!candidate) {
+    if (!resumes.length) {
       throw new HttpException(`Candidate with id ${id} not found`, 404);
     }
 
-    return candidate;
+    return resumes;
   }
 }
