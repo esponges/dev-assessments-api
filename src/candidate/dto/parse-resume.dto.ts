@@ -1,18 +1,10 @@
-import { Transform } from 'class-transformer';
-import { IsObject, IsDefined, IsNotEmptyObject } from 'class-validator';
-
-class Args {
-  resume: string;
-  upsert: boolean;
-  userId: string;
-}
+import { IsString, IsIn } from 'class-validator';
 
 export class ParseResumeDto {
-  @IsDefined()
-  @IsNotEmptyObject()
-  @IsObject()
-  @Transform(({ value }) => {
-    return value && JSON.parse(value);
-  })
-  args: Args;
+  @IsIn(['true', 'false'])
+  @IsString()
+  upsert: string;
+
+  @IsString()
+  userId: string;
 }

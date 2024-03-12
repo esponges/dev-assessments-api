@@ -23,17 +23,11 @@ export class CandidateController {
     @UploadedFile() file?: Express.Multer.File,
     @Body() body?: ParseResumeDto,
   ) {
-    let content: Blob | string = '';
+    const content = new Blob([file.buffer], { type: 'application/pdf' });
+    // fix-this: having trouble transforming the string to boolean with class-transformer
+    const upsert = body.upsert === 'true';
 
-    if (file) {
-      content = new Blob([file.buffer], { type: 'application/pdf' });
-    } else {
-      content = body.args.resume;
-    }
-
-    if (!content) throw new Error('No resume provided');
-
-    return this.candidateService.parseResume(content, '', body.args.upsert);
+    return this.candidateService.parseResume(content, body.userId, upsert);
   }
 
   @Post('similarity_search')
