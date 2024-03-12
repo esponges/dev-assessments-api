@@ -28,12 +28,12 @@ export class CandidateController {
     if (file) {
       content = new Blob([file.buffer], { type: 'application/pdf' });
     } else {
-      content = body.resume;
+      content = body.args.resume;
     }
 
     if (!content) throw new Error('No resume provided');
 
-    return this.candidateService.parseResume(content, body.upsert);
+    return this.candidateService.parseResume(content, '', body.args.upsert);
   }
 
   @Post('similarity_search')
