@@ -28,12 +28,16 @@ model Question {
   updatedAt  DateTime         @updatedAt
 }
 
-// future model for a Candidate - should be improved
-// model Candidate {
-//   id        String   @id @default(uuid())
-//   name      String
-//   email     String
-//   }
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  role      String   @default("candidate") // todo: next roles? admin, recruiter, etc
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  lastSeen  DateTime? // probably not needed for now
+  // token?
+}
 
 model CandidateResume {
   id                String   @id @default(uuid())

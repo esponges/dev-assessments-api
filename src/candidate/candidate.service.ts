@@ -154,6 +154,10 @@ export class CandidateService {
       throw new HttpException(`Candidate with id ${id} not found`, 404);
     }
 
-    return resumes;
+    return {
+      user: {
+        resumes,
+      },
+    };
   }
 }

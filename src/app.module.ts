@@ -12,6 +12,9 @@ import { QuestionsModule } from './questions/questions.module';
 import { PineconeModule } from './pinecone/pinecone.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { CandidateModule } from './candidate/candidate.module';
+import { UserController } from './user/user.controller';
+import { UserModule } from './user/user.module';
+import { UserService } from './user/user.service';
 
 @Module({
   imports: [
@@ -22,8 +25,14 @@ import { CandidateModule } from './candidate/candidate.module';
     PineconeModule,
     PrismaModule,
     CandidateModule,
+    UserModule,
   ],
-  controllers: [AppController, AssessmentsController, QuestionsController],
-  providers: [AppService, AssessmentsService, QuestionsService],
+  controllers: [
+    AppController,
+    AssessmentsController,
+    QuestionsController,
+    UserController,
+  ],
+  providers: [AppService, AssessmentsService, QuestionsService, UserService],
 })
 export class AppModule {}
