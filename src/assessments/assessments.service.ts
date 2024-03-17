@@ -58,6 +58,7 @@ export class AssessmentsService {
               type: q.question_type,
               choices: q.choices?.length ? q.choices : undefined,
               correctAnswer: q.correct_answer,
+              difficulty: q.difficulty,
             })),
           },
         },

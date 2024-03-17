@@ -76,6 +76,7 @@ model AssessmentQuestion {
   updatedAt     DateTime   @updatedAt
   assessmentId  String
   assessment    Assessment @relation(fields: [assessmentId], references: [id])
+  difficulty    String     @default("")
   // todo: add relation to a candidate
 }
 

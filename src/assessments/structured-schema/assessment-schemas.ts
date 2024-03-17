@@ -75,5 +75,6 @@ export type CreateAssessmentResponse = {
     question_topic: string;
     choices?: string[];
     correct_answer: string;
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   }[];
 };

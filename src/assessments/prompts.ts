@@ -75,6 +75,7 @@ export const getAssessmentPrompt = (
           - The questions should cover all the topics in the stack.
           - The questions should be clear and concise.
           - The questions should be challenging and not generic.
+          - The difficulty tag of the question should be according the aforementioned experience bullet points.
           - The questions could be multiple choice or free response, depending on the difficulty level. Please use the provided schema your JSON response.
           `,
         ],
