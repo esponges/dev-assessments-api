@@ -5,6 +5,7 @@ import { UserDto } from './folder/user.dto';
 @Injectable()
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {
+    // todo: figure out why the user service is being initialized twice
     console.log('UserService constructor');
   }
 

@@ -75,7 +75,7 @@ export const getAssessmentPrompt = (
           - The questions should cover all the topics in the stack.
           - The questions should be clear and concise.
           - The questions should be challenging and not generic.
-          - The questions could be multiple choice or free response, depending on the difficulty level. Please use the provided schema to generate the questions.
+          - The questions could be multiple choice or free response, depending on the difficulty level. Please use the provided schema your JSON response.
           `,
         ],
         description: `An assessment for a ${level} software developer with ${number_of_questions} questions.
@@ -95,23 +95,24 @@ export const getAssessmentPrompt = (
         The difficulty of each question will be inferred from the experience of each stack.
         
         Use the following criteria to generate the questions per stack:
-        - 0-2 years of experience. The questions should be easy and multiple choice, and cover the basics.
-        - 2-5 years of experience. The questions should be moderate and cover the intermediate topics, should be a mix of multiple choice and free response.
-        - 5+ years of experience. The questions should be difficult and cover the advanced topics and should mostly be free response.
+        - 0-2 years of experience. The questions should have easy difficulty and multiple choice, and cover the basics.
+        - 2-5 years of experience. The questions should have medium difficulty and cover the intermediate topics, should be a mix of multiple choice and free response.
+        - 5+ years of experience. The questions should have hard difficulty and cover the advanced topics and should mostly be free response.
 
         Key guidelines:
         
+        - Please use the above criteria to generate the questions.
         - The questions should be unique and not repeated.
         - The questions should be tailored to the level of the stack experience.
         - The questions should be clear and concise.
         - The questions should be challenging according to the experience and not generic.
-        - Please use the above criteria to generate the questions.
+        - If provided with more stacks than the number of questions don't exceed the number of questions and prioritize the stack with the most experience.
 
         Example provided stack:
         - Golang: 1.5 years
         - React: 5 years
 
-        Considering this example you would generate 20% of easy questions for Golang and 80% difficult questions for React. 
+        Considering this example you would generate 20% of easy questions for Golang and 80% hard questions for React. 
         `,
         ],
         description: `An assessment for a software developer with the following stack: 
