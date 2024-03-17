@@ -12,11 +12,7 @@ import {
 } from './structured-schema/candidate-tech-stack';
 
 import { createStackList } from 'src/assessments/prompts';
-
-// remove spaces, and special characters from string
-function sanitizeString(str: string) {
-  return str.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-}
+import { sanitizeString } from 'src/utils';
 
 @Injectable()
 export class CandidateService {

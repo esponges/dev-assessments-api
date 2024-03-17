@@ -57,6 +57,7 @@ export class LangchainService {
     const prompt = this.generatePrompt(promptMessages);
     const runnable = this.getRunnable(schema, prompt);
 
+    // fix this `as` type, the type should be passed to the runnable I think
     const response = (await runnable.invoke({ ...context })) as R;
 
     return response;
