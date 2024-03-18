@@ -12,10 +12,7 @@ export const createStackList = (
   return stack.map((s) => `- ${s.tech}: ${s.experience} years`).join('\n');
 };
 
-export const getAssessmentPrompt = (
-  details?: CreateAssessmentDto,
-  type?: number,
-): Prompt => {
+export const getAssessmentPrompt = (details?: CreateAssessmentDto): Prompt => {
   /* 
     TODO: Create an assessment considering the experience per technology
     eg. the candidate is not asked a hard question on a technology they are not proficient in
@@ -29,9 +26,9 @@ export const getAssessmentPrompt = (
   };
   const DEFAULT_DURATION = 30;
 
-  const { stack, level, number_of_questions, duration } = details;
+  const { stack, level, number_of_questions, duration, promptOpt } = details;
 
-  switch (type) {
+  switch (promptOpt) {
     case 1:
       return {
         /* 
@@ -90,12 +87,13 @@ export const getAssessmentPrompt = (
       return {
         promptMessages: [
           'human',
-          `You are an AI assistant for creating unique code assessment for a software developer with the following criteria: {description}
+          `
+        You are an AI assistant for creating unique code assessment for a software developer with the following criteria: {description}
         
         You will be provided with a stack of technologies from the developer experience. 
         The difficulty of each question will be inferred from the experience of each stack.
+        Don't exceed the number of questions provided. Priority should be given to the stack with the most experience.
         
-        If provided the stack list length is greater than the number of questions don't EVER exceed the solicited number of questions and prioritize the stack with the most experience.
         Use the following criteria to generate the questions per stack:
         - 0-2 years of experience. The questions should have easy difficulty and multiple choice, and cover the basics.
         - 2-5 years of experience. The questions should have medium difficulty and cover the intermediate topics, should be a mix of multiple choice and free response.
@@ -117,8 +115,9 @@ export const getAssessmentPrompt = (
         `,
         ],
         description: `An assessment for a software developer with the following stack: 
-        \n${stackList} 
-        \nWith ${number_of_questions} questions to be completed in ${duration || DEFAULT_DURATION} minutes`,
+        \n${stackList}.
+        \nWith ${number_of_questions} questions. 
+        \n${duration ? `That should be completed in ${duration} minutes` : ''}`,
       };
   }
   return defaultCase;
