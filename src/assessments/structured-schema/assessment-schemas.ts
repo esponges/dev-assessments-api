@@ -56,15 +56,14 @@ export const createAssessmentSchema = {
             type: 'string',
             enum: ['MULTIPLE_CHOICE', 'FREE_RESPONSE'],
           },
-          question_topic: {
-            type: 'string',
-            description:
-              'The topic of the question (e.g. "React", "Nodejs", "Python")',
-          },
           difficulty: { type: 'string', enum: ['EASY', 'MEDIUM', 'HARD'] },
           choices: { type: 'array', items: { type: 'string' } },
           correct_answer: { type: 'string' },
-          stack: { type: 'string' },
+          stack: {
+            type: 'string',
+            description:
+              'The tech or framework the question is about, e.g. "Golang"',
+          },
         },
         required: ['question_text', 'choices', 'difficulty', 'correct_answer'],
       },
@@ -81,5 +80,6 @@ export type CreateAssessmentResponse = {
     choices?: string[];
     correct_answer: string;
     difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+    stack: string;
   }[];
 };

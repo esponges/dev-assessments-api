@@ -59,7 +59,7 @@ export class AssessmentsService {
               choices: q.choices?.length ? q.choices : undefined,
               correctAnswer: q.correct_answer,
               difficulty: q.difficulty,
-              topic: q.question_topic,
+              stack: q.stack,
             })),
           },
         },

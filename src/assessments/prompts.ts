@@ -92,9 +92,10 @@ export const getAssessmentPrompt = (
           'human',
           `You are an AI assistant for creating unique code assessment for a software developer with the following criteria: {description}
         
-        You will be provided with a stack of the developer. 
+        You will be provided with a stack of technologies from the developer experience. 
         The difficulty of each question will be inferred from the experience of each stack.
         
+        If provided the stack list length is greater than the number of questions don't EVER exceed the solicited number of questions and prioritize the stack with the most experience.
         Use the following criteria to generate the questions per stack:
         - 0-2 years of experience. The questions should have easy difficulty and multiple choice, and cover the basics.
         - 2-5 years of experience. The questions should have medium difficulty and cover the intermediate topics, should be a mix of multiple choice and free response.
@@ -107,7 +108,6 @@ export const getAssessmentPrompt = (
         - The questions should be tailored to the level of the stack experience.
         - The questions should be clear and concise.
         - The questions should be challenging according to the experience and not generic.
-        - If provided with more stacks than the number of questions don't exceed the number of questions and prioritize the stack with the most experience.
 
         Example provided stack:
         - Golang: 1.5 years

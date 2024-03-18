@@ -77,7 +77,7 @@ model AssessmentQuestion {
   assessmentId  String
   assessment    Assessment @relation(fields: [assessmentId], references: [id])
   difficulty    String     @default("")
-  topic         String     @default("")
+  stack         String     @default("")
   // todo: add relation to a candidate
 }
 
