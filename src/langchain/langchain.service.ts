@@ -19,7 +19,7 @@ export class LangchainService {
   private outputParser = new JsonOutputFunctionsParser();
 
   constructor() {
-    console.log('LangchainService constructor created');
+    console.log('LangchainService instantiated');
   }
 
   generatePrompt(

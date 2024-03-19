@@ -21,7 +21,9 @@ export class CandidateService {
     private readonly langchain: LangchainService,
     private readonly pineconeService: PineconeService,
     private readonly prismaService: PrismaService,
-  ) {}
+  ) {
+    console.log('CandidateService instantiated');
+  }
 
   async parseResume(file: Blob, userId: string, upsert?: boolean) {
     const isBlob = file instanceof Blob;

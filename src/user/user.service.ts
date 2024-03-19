@@ -6,7 +6,7 @@ import { UserDto } from './folder/user.dto';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {
     // todo: figure out why the user service is being initialized twice
-    console.log('UserService constructor');
+    console.log('UserService instantiated');
   }
 
   async create(body: UserDto) {

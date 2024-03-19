@@ -15,7 +15,7 @@ export class PineconeService {
   });
 
   constructor(private readonly questionsService: QuestionsService) {
-    console.log('PineconeService constructor created');
+    console.log('PineconeService instantiated');
   }
 
   getClient() {
