@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { WebPDFLoader } from 'langchain/document_loaders/web/pdf';
 import { randomUUID } from 'crypto';
 
@@ -147,10 +147,6 @@ export class CandidateService {
         userId: id,
       },
     });
-
-    if (!resumes.length) {
-      throw new HttpException(`Candidate with id ${id} not found`, 404);
-    }
 
     return {
       user: {
