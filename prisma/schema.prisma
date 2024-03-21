@@ -36,7 +36,7 @@ model User {
   createdAt   DateTime              @default(now())
   updatedAt   DateTime              @updatedAt
   lastSeen    DateTime? // probably not needed for now
-  evaluations EvaluatedAssessment[]
+  // evaluations EvaluatedAssessment[]
   // token?
 }
 
@@ -88,6 +88,7 @@ model Assessment {
   questions AssessmentQuestion[]
   createdAt DateTime             @default(now())
   updatedAt DateTime             @updatedAt
+  evals     EvaluatedQuestion[]
 }
 
 model EvaluatedQuestion {
@@ -97,18 +98,8 @@ model EvaluatedQuestion {
   questionId    String
   question      AssessmentQuestion @relation(fields: [questionId], references: [id])
   assessmentId  String
-  assessment    EvaluatedAssessment @relation(fields: [assessmentId], references: [id])
+  assessment    Assessment @relation(fields: [assessmentId], references: [id])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
 
-model EvaluatedAssessment {
-  id           String   @id @default(uuid())
-  assessmentId String
-  questions    EvaluatedQuestion[]
-  score        Int
-  candidateId  String
-  candidate    User     @relation(fields: [candidateId], references: [id])
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-}

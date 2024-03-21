@@ -172,22 +172,20 @@ export class AssessmentsService {
 
     const finalScore = totalScore / questions.length;
 
-    // upload results to the database
-    await this.prisma.evaluatedAssessment.create({
+    await this.prisma.assessment.update({
+      where: {
+        id: details.assessmentId,
+      },
       data: {
-        assessmentId: '1245',
-        candidateId: '123',
-        questions: {
+        evals: {
           createMany: {
             data: evaluatedAssessment.map((q) => ({
               score: q.score,
               feedback: q.feedbackMessage,
               questionId: q.id,
-              assessmentId: '1245',
             })),
           },
         },
-        score: finalScore,
       },
     });
 

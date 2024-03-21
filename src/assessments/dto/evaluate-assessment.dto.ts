@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsArray } from 'class-validator';
+import { IsNotEmpty, IsArray, IsString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { AssessmentQuestion } from 'src/models';
 
@@ -11,4 +11,12 @@ export class EvaluateAssessmentDto {
   @IsArray()
   @Type(() => AssessmentQuestion)
   questions: AssessmentQuestion[];
+
+  @IsString()
+  @IsNotEmpty()
+  candidateId: string;
+
+  @IsString()
+  @IsNotEmpty()
+  assessmentId: string;
 }
