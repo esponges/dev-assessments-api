@@ -183,6 +183,9 @@ export class AssessmentsService {
               score: q.score,
               feedback: q.feedbackMessage,
               questionId: q.id,
+              // this will fail is the candidate is not in the db
+              // check the webhooks to add candidates from Clerk
+              candidateId: details.candidateId,
             })),
           },
         },
