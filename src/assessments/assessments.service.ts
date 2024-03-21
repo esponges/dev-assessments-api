@@ -59,7 +59,7 @@ export class AssessmentsService {
               choices: q.choices?.length ? q.choices : undefined,
               correctAnswer: q.correct_answer,
               difficulty: q.difficulty,
-              stack: q.stack,
+              topic: q.stack,
             })),
           },
         },
@@ -170,8 +170,29 @@ export class AssessmentsService {
       }
     });
 
+    const finalScore = totalScore / questions.length;
+
+    // upload results to the database
+    await this.prisma.evaluatedAssessment.create({
+      data: {
+        assessmentId: '1245',
+        candidateId: '123',
+        questions: {
+          createMany: {
+            data: evaluatedAssessment.map((q) => ({
+              score: q.score,
+              feedback: q.feedbackMessage,
+              questionId: q.id,
+              assessmentId: '1245',
+            })),
+          },
+        },
+        score: finalScore,
+      },
+    });
+
     return {
-      totalScore: totalScore / questions.length,
+      totalScore: finalScore,
       evaluatedAssessment,
     };
   }

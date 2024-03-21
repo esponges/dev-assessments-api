@@ -29,13 +29,14 @@ model Question {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String
-  role      String   @default("candidate") // todo: next roles? admin, recruiter, etc
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  lastSeen  DateTime? // probably not needed for now
+  id          String                @id @default(uuid())
+  name        String
+  email       String
+  role        String                @default("candidate") // todo: next roles? admin, recruiter, etc
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+  lastSeen    DateTime? // probably not needed for now
+  evaluations EvaluatedAssessment[]
   // token?
 }
 
@@ -47,21 +48,20 @@ model CandidateResume {
   detailedTechStack Json     @default("[{}]")
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
+  // add a relation to the candidate in the future
 
   @@index([userId])
-  // add a relation to the candidate in the future
 }
 
-// type Assessment = {
-//   title: string;
-//   questions: {
-//     question_text: string;
-//     question_type: string;
-//     question_topic: string;
-//     choices?: string[];
-//     correct_answer: string;
-//   }[];
-// };
+// this model should help us to calculate the assessment score for the candidadtes general scoreboards
+// not yet in use
+model QuestionDifficulty {
+  id         String   @id @default(uuid())
+  difficulty String
+  value      Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
 
 model AssessmentQuestion {
   id            String     @id @default(uuid())
@@ -78,16 +78,8 @@ model AssessmentQuestion {
   assessment    Assessment @relation(fields: [assessmentId], references: [id])
   difficulty    String     @default("")
   stack         String     @default("")
+  evals         EvaluatedQuestion[]
   // todo: add relation to a candidate
-}
-
-// this model should help us to calculate the assessment score for the candidadtes general scoreboards
-model QuestionDifficulty {
-  id         String   @id @default(uuid())
-  difficulty String
-  value      Int
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
 }
 
 model Assessment {
@@ -96,4 +88,27 @@ model Assessment {
   questions AssessmentQuestion[]
   createdAt DateTime             @default(now())
   updatedAt DateTime             @updatedAt
+}
+
+model EvaluatedQuestion {
+  id            String   @id @default(uuid())
+  score         Int
+  feedback      String
+  questionId    String
+  question      AssessmentQuestion @relation(fields: [questionId], references: [id])
+  assessmentId  String
+  assessment    EvaluatedAssessment @relation(fields: [assessmentId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model EvaluatedAssessment {
+  id           String   @id @default(uuid())
+  assessmentId String
+  questions    EvaluatedQuestion[]
+  score        Int
+  candidateId  String
+  candidate    User     @relation(fields: [candidateId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }

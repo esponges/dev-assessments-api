@@ -45,7 +45,15 @@ export const evaluateChallengeSchema = {
   ],
 };
 
-// todo: rename file to `challenge-schema.ts`
+// todo: use it...
+export type EvaluateChallengeLLMResponse = {
+  code_quality: number;
+  code_correctness: number;
+  code_efficiency: number;
+  code_maintainability: number;
+  feedback_message: string;
+};
+
 export const createChallengeSchema = {
   name: 'create_challenge',
   description:
