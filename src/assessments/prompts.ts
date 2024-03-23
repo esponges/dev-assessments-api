@@ -95,14 +95,16 @@ export const getAssessmentPrompt = (details?: CreateAssessmentDto): Prompt => {
         Don't exceed the number of questions provided. Priority should be given to the stack with the most experience.
         
         Use the following criteria to generate the questions per stack:
-        - 0-2 years of experience. The questions should have easy difficulty and multiple choice, and cover the basics.
-        - 2-5 years of experience. The questions should have medium difficulty and cover the intermediate topics, should be a mix of multiple choice and free response.
-        - 5+ years of experience. The questions should have hard difficulty and cover the advanced topics and should mostly be free response.
+        - 0-2 years of experience. The questions should have easy difficulty and multiple choice. Responses should not be too obvious.
+        - 2-5 years of experience. The questions should have medium difficulty and cover the intermediate topics, should be a mix of multiple choice and free response. 
+          When multiple choice, the options should be challenging.
+        - 5+ years of experience. The questions should have hard difficulty and cover the advanced topics and should mostly be free response and challenging.
 
         Key guidelines:
         
         - Please use the above criteria to generate the questions.
         - The questions should be unique and not repeated.
+        - The questions should be based in the latest knowledge from the technology. For example, if the stack is React, the question should avoid class components.
         - The questions should be tailored to the level of the stack experience.
         - The questions should be clear and concise.
         - The questions should be challenging according to the experience and not generic.
