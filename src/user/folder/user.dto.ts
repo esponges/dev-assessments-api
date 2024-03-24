@@ -14,7 +14,11 @@ export class UserDto {
 
   @IsString()
   @ValidateIf((o) => o.create)
-  name: string;
+  firstName: string;
+
+  @IsString()
+  @ValidateIf((o) => o.create)
+  lastName: string;
 
   @IsString()
   @IsIn(['admin', 'candidate'])

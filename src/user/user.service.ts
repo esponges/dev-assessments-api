@@ -64,13 +64,34 @@ export class UserService {
     console.log('Webhook body:', body);
 
     // Handle the event
+    // todo: handle events in the db
     switch (eventType) {
       case 'user.created':
-        // Handle user created event
-        break;
       case 'user.updated':
-        // Handle user updated event
-        break;
+        const data = {
+          email: evt.data.email_addresses[0].email_address,
+          firstName: evt.data.first_name,
+          lastName: evt.data.last_name,
+          createdAt: new Date(evt.data.created_at).toISOString(),
+          updatedAt: new Date(evt.data.updated_at).toISOString(),
+          lastSeen: new Date(evt.data.last_sign_in_at).toISOString(),
+          // todo: support roles using orgs - candidate is default atm
+        };
+        return this.prismaService.user.upsert({
+          where: { id },
+          update: data,
+          create: { id, ...data },
+        });
+      case 'session.created':
+        // just update the last seen
+        return this.prismaService.user.update({
+          where: { id },
+          data: { lastSeen: new Date().toISOString() },
+        });
+      // want to handle these?
+      case 'session.ended':
+      case 'session.removed':
+      case 'session.revoked':
       default:
         console.log('Unhandled event type');
     }
