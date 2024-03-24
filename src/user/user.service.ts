@@ -60,9 +60,6 @@ export class UserService {
     const { id } = evt.data;
     const eventType = evt.type;
 
-    console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-    console.log('Webhook body:', body);
-
     // Handle the event
     // todo: handle events in the db
     switch (eventType) {
@@ -83,9 +80,11 @@ export class UserService {
           create: { id, ...data },
         });
       case 'session.created':
+        // this evt sends user id as user_id instead of id only
+        const userId = evt.data.user_id;
         // just update the last seen
         return this.prismaService.user.update({
-          where: { id },
+          where: { id: userId },
           data: { lastSeen: new Date().toISOString() },
         });
       // want to handle these?
