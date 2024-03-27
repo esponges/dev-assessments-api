@@ -24,9 +24,7 @@ export class AssessmentsController {
 
   @Post('challenge/create')
   createChallenge(@Body() createChallengeBody: CreateChallengeDto) {
-    return this.assessmentsService.createChallenge(
-      createChallengeBody.experience,
-    );
+    return this.assessmentsService.createChallenge(createChallengeBody);
   }
 
   @Post('challenge/evaluate')

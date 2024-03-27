@@ -2,6 +2,7 @@ import { Prompt } from 'src/types';
 import { CreateAssessmentDto } from './dto/create-assessment.dto';
 import { EvaluateChallengeDto } from './dto/evaluate-challenge.dto';
 import { AssessmentQuestion } from 'src/models';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
 
 export const createStackList = (
   stack: {
@@ -103,7 +104,7 @@ export const getAssessmentPrompt = (details?: CreateAssessmentDto): Prompt => {
         Key guidelines:
         
         - Please use the above criteria to generate the questions.
-        - The questions should be unique and not repeated.
+        - Avoid nano questions (questions about the syntax) but rather questions that assess a candidate design thinking and problem-solving skills.
         - The questions should be based in the latest knowledge from the technology. For example, if the stack is React, the question should avoid class components.
         - The questions should be tailored to the level of the stack experience.
         - The questions should be clear and concise.
@@ -202,7 +203,7 @@ export const getEvaluateAssessmentPrompt = (evaluateAssessmentBody: {
 };
 
 export const getCreateChallengePrompt = (
-  experience: string,
+  experience: CreateChallengeDto,
 ): Partial<Prompt> => {
   return {
     promptMessages: [
@@ -231,6 +232,6 @@ export const getCreateChallengePrompt = (
       A challenge for this example could be to create a custom hook that fetches data from an API and handles loading, error, and success states.\n\n 
     `,
     ],
-    description: `An challenge for a software developer with the following experience:\n\n${experience}.`,
+    description: `An challenge for a software developer with the following experience:\n\n ${experience.tech}: ${experience.experience} years.`,
   };
 };

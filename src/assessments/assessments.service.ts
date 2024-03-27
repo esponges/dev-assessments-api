@@ -23,6 +23,7 @@ import {
   type EvaluateAssessmentResponse,
   evaluateAssessmentSchema,
 } from './structured-schema/assessment-schemas';
+import { CreateChallengeDto } from './dto/create-challenge.dto';
 
 @Injectable()
 export class AssessmentsService {
@@ -90,12 +91,13 @@ export class AssessmentsService {
     return response;
   }
 
-  async createChallenge(experience: string) {
-    const response = await this.langchain.getStructuredResponse<string>(
-      experience,
-      this.createChallengeSchema,
-      getCreateChallengePrompt,
-    );
+  async createChallenge(experience: CreateChallengeDto) {
+    const response =
+      await this.langchain.getStructuredResponse<CreateChallengeDto>(
+        experience,
+        this.createChallengeSchema,
+        getCreateChallengePrompt,
+      );
 
     return response;
   }
