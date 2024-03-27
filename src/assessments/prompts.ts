@@ -128,11 +128,11 @@ export const getAssessmentPrompt = (details?: CreateAssessmentDto): Prompt => {
 
 export const getEvaluateChallengePrompt = ({
   challenge,
-  devResponse,
+  devSolution,
   promptOpt,
 }: EvaluateChallengeDto): Partial<Prompt> & {
   challenge: string;
-  devResponse: string;
+  devSolution: string;
 } => {
   // todo: don't use partial but create a type for PromptMessages
   const defaultCase = {
@@ -156,11 +156,11 @@ export const getEvaluateChallengePrompt = ({
       - You should consider the latest best practices and standards.
       
       The challenge for the developer is: {challenge}
-      The response from the developer is: {devResponse}
+      The response from the developer is: {devSolution}
       `,
     ],
     challenge: `The challenge for the developer is: ${challenge}`,
-    devResponse: `The response from the developer is: ${devResponse}`,
+    devSolution: `The response from the developer is: ${devSolution}`,
   };
 
   switch (promptOpt) {
@@ -223,6 +223,7 @@ export const getCreateChallengePrompt = (
       
       Key guidelines:\n
       - The task should be solvable offline (white-boarding) and without any kind of compiler or IDE.\n
+      - The challenge should aim towards design thinking and problem-solving skills\n
       - Avoid data structures and algorithms problems and focus on real-world scenarios.\n
       - Ensure the problem is unique and not repeated.\n
       - Tailor the problem to the level of experience with the specified technology.\n

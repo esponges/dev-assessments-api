@@ -11,7 +11,7 @@ export class EvaluateChallengeDto {
 
   @IsString()
   @IsNotEmpty()
-  devResponse: string;
+  devSolution: string;
 
   @IsNumber()
   @IsOptional()

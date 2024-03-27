@@ -91,15 +91,21 @@ export class AssessmentsService {
     return response;
   }
 
-  async createChallenge(experience: CreateChallengeDto) {
-    const response =
-      await this.langchain.getStructuredResponse<CreateChallengeDto>(
-        experience,
-        this.createChallengeSchema,
-        getCreateChallengePrompt,
-      );
+  async createChallenge(details: CreateChallengeDto) {
+    const response = await this.langchain.getStructuredResponse<
+      CreateChallengeDto,
+      { challenge: string }
+    >(details, this.createChallengeSchema, getCreateChallengePrompt);
 
-    return response;
+    const newChallenge = await this.prisma.challenge.create({
+      data: {
+        content: response.challenge,
+        stack: details.tech,
+        stackExperience: details.experience.toString(),
+      },
+    });
+
+    return { newChallenge };
   }
 
   async evaluateAssessment(details: EvaluateAssessmentDto) {

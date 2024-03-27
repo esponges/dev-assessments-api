@@ -29,15 +29,16 @@ model Question {
 }
 
 model User {
-  id        String              @id @default(uuid())
-  firstName String?
-  lastName  String?
-  email     String
-  role      String              @default("candidate") // todo: next roles? admin, recruiter, etc
-  evals     EvaluatedQuestion[]
-  createdAt DateTime            @default(now())
-  updatedAt DateTime            @updatedAt
-  lastSeen  DateTime? // probably not needed for now
+  id         String               @id @default(uuid())
+  firstName  String?
+  lastName   String?
+  email      String
+  role       String               @default("candidate") // todo: next roles? admin, recruiter, etc
+  evals      EvaluatedQuestion[]
+  challenges CandidateChallenge[]
+  createdAt  DateTime             @default(now())
+  updatedAt  DateTime             @updatedAt
+  lastSeen   DateTime? // probably not needed for now
   // evaluations EvaluatedAssessment[]
   // token?
 }
@@ -53,6 +54,41 @@ model CandidateResume {
   // add a relation to the candidate in the future
 
   @@index([userId])
+}
+
+model Challenge {
+  id              String               @id @default(uuid())
+  title           String?
+  content         String
+  stack           String
+  stackExperience String
+  solution        String? // for the future
+  devSolutions    CandidateChallenge[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  // todo: add metadata for similarity search
+  // metadataId String            @unique
+  // metadata   ChallengeMetadata @relation(fields: [metadataId], references: [id])
+}
+
+model CandidateChallenge {
+  id                  String    @id @default(uuid())
+  solution            String? // todo: make model create a solution
+  devSolution         String
+  codeQuality         String
+  codeCorrectness     String
+  codeEfficiency      String
+  codeMaintainability String
+  feedbackMessage     String
+  userId              String    @default("anonymous")
+  user                User      @relation(fields: [userId], references: [id])
+  challengeId         String
+  challenge           Challenge @relation(fields: [challengeId], references: [id])
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  // add a relation to the candidate in the future
+
+  // @@index([userId])
 }
 
 // this model should help us to calculate the assessment score for the candidadtes general scoreboards
